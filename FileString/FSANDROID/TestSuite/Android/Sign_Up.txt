@@ -1,59 +1,112 @@
 *** Settings ***
 Test Setup        Open Application    ${v_remoteUrl}    ${v_alias}
+Test Teardown     Run Keywords    fsand_Delete User Information In Database    ${v_data[2]}    AND    Close Application
 Resource          ../../Resources/Android/SignUpKeywords.txt
 Library           AppiumLibrary
 
 *** Test Cases ***
-fs[1234]_Sign up with valid email never sign up before and password
+fs[0001]_Can sign up with valid email never sign up before and password
+    fs_loadDataFromFileNewVersion    ${CURDIR}/Data.xlsx
+    fsand_Sign Up    ${v_data[0]}    ${v_data[1]}    ${v_data[2]}    ${v_data[3]}    ${v_data[4]}    ${v_data[5]}
+    [Teardown]
+
+fs[0002]_Can sign up with Secondary email but not verify
+    fs_loadDataFromFileNewVersion    ${CURDIR}/Data.xlsx
+    fsand_Sign Up    ${v_data[0]}    ${v_data[1]}    ${v_data[2]}    ${v_data[3]}    ${v_data[4]}    ${v_data[5]}
+    [Teardown]
+
+fs[0003]_Can sing up with email has "space" in first and end letter
+    fs_loadDataFromFileNewVersion    ${CURDIR}/Data.xlsx
+    fsand_Sign Up    ${v_data[0]}    ${v_data[1]}    ${v_data[2]}    ${v_data[3]}    ${v_data[4]}    ${v_data[5]}
+    [Teardown]
+
+fs[0004]_Can sign up with email that received file
+    fs_loadDataFromFileNewVersion    ${CURDIR}/Data.xlsx
+    fsand_Sign Up    ${v_data[0]}    ${v_data[1]}    ${v_data[2]}    ${v_data[3]}    ${v_data[4]}    ${v_data[5]}
+    [Teardown]
+
+fs[0005]_Can sign up with password has special characters
+    fs_loadDataFromFileNewVersion    ${CURDIR}/Data.xlsx
+    fsand_Sign Up    ${v_data[0]}    ${v_data[1]}    ${v_data[2]}    ${v_data[3]}    ${v_data[4]}    ${v_data[5]}
+
+fs[0006]_Can sign up with password has 4 characters
+    fs_loadDataFromFileNewVersion    ${CURDIR}/Data.xlsx
+    fsand_Sign Up    ${v_data[0]}    ${v_data[1]}    ${v_data[2]}    ${v_data[3]}    ${v_data[4]}    ${v_data[5]}
+
+fs[0007]_Can sign up with password has 36 characters
+    fs_loadDataFromFileNewVersion    ${CURDIR}/Data.xlsx
+    fsand_Sign Up    ${v_data[0]}    ${v_data[1]}    ${v_data[2]}    ${v_data[3]}    ${v_data[4]}    ${v_data[5]}
+
+fs[0008]_Can sign up with password length from 4 to 36 characters
+    fs_loadDataFromFileNewVersion    ${CURDIR}/Data.xlsx
+    fsand_Sign Up    ${v_data[0]}    ${v_data[1]}    ${v_data[2]}    ${v_data[3]}    ${v_data[4]}    ${v_data[5]}
+
+fs[0009]_Can not sign up with empty First Name
+    [Setup]    Open Application    ${v_remoteUrl}    ${v_alias}
+    fs_loadDataFromFileNewVersion    ${CURDIR}/Data.xlsx
+    fsand_Sign Up Fill Value    ${EMPTY}    ${v_data[0]}    ${v_data[1]}    ${v_data[2]}
+    Element Should Be Disabled    ${SignUp_CreateButton}
+    [Teardown]    Close Application
+
+fs[0010]_Can not sign up with empty Last Name
+    fs_loadDataFromFileNewVersion    ${CURDIR}/Data.xlsx
+    fsand_Sign Up Fill Value    ${v_data[0]}    ${EMPTY}    ${v_data[1]}    ${v_data[2]}
+    Element Should Be Disabled    ${SignUp_CreateButton}
+    [Teardown]    Close Application
+
+fs[0011]_Can not sign up with empty Email Address
+    fs_loadDataFromFileNewVersion    ${CURDIR}/Data.xlsx
+    fsand_Sign Up Fill Value    ${v_data[0]}    ${v_data[1]}    ${EMPTY}    ${v_data[2]}
+    Element Should Be Disabled    ${SignUp_CreateButton}
+    [Teardown]    Close Application
+
+fs[0012]_Can not sign up with empty Password
+    fs_loadDataFromFileNewVersion    ${CURDIR}/Data.xlsx
+    fsand_Sign Up Fill Value    ${v_data[0]}    ${v_data[1]}    ${v_data[2]}    ${EMPTY}
+    Element Should Be Disabled    ${SignUp_CreateButton}
+    [Teardown]    Close Application
+
+fs[0013]_Can not sign up with Invalid Email
+    fs_loadDataFromFileNewVersion    ${CURDIR}/Data.xlsx
+    fsand_Sign Up    ${v_data[0]}    ${v_data[1]}    ${v_data[2]}    ${v_data[3]}    ${v_data[4]}    ${v_data[5]}
+    [Teardown]    Close Application
+
+fs[0014]_Can not sign up with Password < 4 characters
+    fs_loadDataFromFileNewVersion    ${CURDIR}/Data.xlsx
+    fsand_Sign Up    ${v_data[0]}    ${v_data[1]}    ${v_data[2]}    ${v_data[3]}    ${v_data[4]}    ${v_data[5]}
+    [Teardown]    Close Application
+
+fs[0015]_Can not sign up with password > 36 characters
+    fs_loadDataFromFileNewVersion    ${CURDIR}/Data.xlsx
+    fsand_Sign Up    ${v_data[0]}    ${v_data[1]}    ${v_data[2]}    ${v_data[3]}    ${v_data[4]}    ${v_data[5]}
+    [Teardown]    Close Application
+
+fs[0016]_Can not sign up with First name, Last name ( > 128 characters)
+
+fs[0017]_Can not sign up with Email signed up before
+    fs_loadDataFromFileNewVersion    ${CURDIR}/Data.xlsx
+    fsand_Sign Up    ${v_data[0]}    ${v_data[1]}    ${v_data[2]}    ${v_data[3]}    ${v_data[4]}    ${v_data[5]}
+    [Teardown]    Close Application
+
+fs[0018]_Can not sign up with Email is secondary email already
+    fs_loadDataFromFileNewVersion    ${CURDIR}/Data.xlsx
+    fsand_Sign Up    ${v_data[0]}    ${v_data[1]}    ${v_data[2]}    ${v_data[3]}    ${v_data[4]}    ${v_data[5]}
+    [Teardown]    Close Application
+
+fs[0019]_Can not sign up with First name has pecial character: < > ? : " | * \ /
+
+fs[0020]_Can not sign up with Last name has pecial character: < > ? : " | * \ /
+
+fs[0021]_Can not sign up with Without network
+    fs_loadDataFromFileNewVersion    ${CURDIR}/Data.xlsx
+    fsand_Sign Up    ${v_data[0]}    ${v_data[1]}    ${v_data[2]}    ${v_data[3]}    ${v_data[4]}    ${v_data[5]}
+
+fs[0022]_Can not sign up with Service has any problem
+    fs_loadDataFromFileNewVersion    ${CURDIR}/Data.xlsx
+    fsand_Sign Up    ${v_data[0]}    ${v_data[1]}    ${v_data[2]}    ${v_data[3]}    ${v_data[4]}    ${v_data[5]}
+
+fs[0000]_Test
     fs_loadDataFromFileNewVersion    ${CURDIR}/Data.xlsx
     fsand_Open File String Application
-    #    fsand_ClickUp    sta25.114@yopmail.com
-    #    Del User on DataBase    fsand_Delete User Information In Database    sta25.114@yopmail.com
-    #    Change environment
-    fsand_Change Environment    Staging
-    #    Click Sign Up Now to move to Sign Up form
-    Click Element    ${SignIn_SignUp}
-    #    Input First Name
-    fsand_Input First Name    ${v_data[0]}
-    #    Input Last Name
-    fsand_Input Last Name    ${v_data[1]}
-    #    input email address
-    fsand_Input Email Address_Sign Up    ${v_data[2]}
-    #    input password
-    fsand_Input Password_Sign Up    ${v_data[3]}
-    #    Click Sign Up Button
-    Click Element    ${SignUp_CreateButton}
-    #    Verify Title "Verify Email after Sign UP"
-    Wait Until Page Contains    ${v_data[4]}    20s    #    ${Title_SignUp_VerifyEmail}    text=${v_data[4]}
-    #    Verify Mesage "Verify Email after Sign UP "
-    Wait Until Page Contains    ${v_data[5]}    20s    #    ${Message_SignUp_VerifyEmail}    text=${v_data[5]}
-    #    Click OK button
-    fsand_ClickPositiveButton
-    [Teardown]    Close All Applications
-
-Sign up with Secondary email but not verify
-
-Email has "space" in first and end letter
-
-Long First name, Last name (<= 128 characters)
-
-Password has special characters
-
-Empty any value
-    [Setup]    fsand_Navigate To Sign Up Screen
-    fsand_Input Email Address_Sign Up
-    fsand_Input Password_Sign Up
-
-Invalid Email
-
-Password < 4 & > 36 character
-
-First name, Last name ( > 128 characters)
-
-Email signed up before
-
-Email is secondary email already
-
-First name, last name has pecial character: < > ? : " | * \ /
-
-Without network
+    #    Run Keywords | fsand_Delete User Information In Database | ${v_data[2]} | AND | Close All Applications
+    fsand_Delete User Information In Database    ${v_data[2]}

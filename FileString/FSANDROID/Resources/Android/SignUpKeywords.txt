@@ -28,7 +28,7 @@ fsand_Delete User Information In Database
     ${v_queryResult}=    DatabaseLibrary.Query    select * from UserEmailAddress where EmailAddress='${v_emailAddress}'
     ${v_userID}=    Set Variable    ${v_queryResult[0][1]}
     #    Delete 1: from RegisteredDevice table
-    Run Keyword And Ignore Error    DatabaseLibrary.Execute Sql String    DELETE FROM RegisteredDevice WHERE DeviceOwnerID='${v_userID}' ; DELETE FROM ServicePreference WHERE UserID='${v_userID}' ; DELETE FROM UserEmailAddress WHERE EmailAddress='${v_emailAddress}' ; DELETE FROM [User] WHERE Username='${v_emailAddress}'
+    Run Keyword And Ignore Error    DatabaseLibrary.Execute Sql String    DELETE FROM WizardUser WHERE UserID='${v_userID}' ; DELETE FROM [User] WHERE UserID='${v_userID}' ;
     #    Delete 2: from ServicePreference table
     Comment    Run Keyword And Ignore Error    DatabaseLibrary.Execute Sql String    DELETE FROM ServicePreference WHERE UserID='${v_userID}'
     Comment    #    Delete 3: from UserEmailAddress table

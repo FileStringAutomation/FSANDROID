@@ -44,18 +44,20 @@ OK_Button = "id=com.filestring.lattedouble:id/dlg_btn_positive"
 """
 @Author: Linh.nguyen
 @Date Created: Jan 07, 2015
-@Description: Back, Home Action
+@Description: KeyEvent Android Device
 """
-Action_Up = "id=android:id/up"
-Action_Home = "id=android:id/home"
-
-#Title
-Title_SignUp_VerifyEmail = "Verify your email address"
-
-#Message
-Message_SignUp_VerifyEmail = "Look out for the verification email from FileString and follow instructions in the email."
+KeyEvent_Home = 3
+KeyEvent_Back = 4
+KeyEvent_Menu = 82
 
 
+"""
+@Author: Linh.nguyen
+@Date Created: Jan 13, 2015
+@Description: Verify Page Contain by Text
+"""
+Verify_SignIn_Form = "Forgot your password?"
+Verify_SignUP_Form= "New Account"
 
 """
 @Author: Minh.nguyen

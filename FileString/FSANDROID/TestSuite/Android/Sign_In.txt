@@ -13,6 +13,7 @@ fs[4674]_Sign in with Email has "space" in first and end
 fs[4678]_Sign in After reset password with new password
 
 Sign in After change password on web with new password
+    Click Button
 
 Sign in After change primary email on web with new Email
 

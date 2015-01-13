@@ -1,5 +1,6 @@
 *** Settings ***
 Resource          ../../Variables/Variables.txt
+Resource          SignUpKeywords.txt
 
 *** Keywords ***
 fsand_Open File String Application
@@ -15,11 +16,55 @@ fsand_Change Environment
 fsand_ClickPositiveButton
     Click Element    ${OK_Button}
 
-fsand_Click Up
-    Click Element    Action_Up
+fsand_Click Back
+    Click Element    ${Home_Back}
 
 fsand_Click Home
-    Click Element    Action_Home
+    Click Element    ${Home_Logo}
 
 fsand_Navigate To Sign Up Screen
     Click Element    ${SignIn_SignUp}
+
+fsand_Sign Up
+    [Arguments]    ${v_firstName}    ${v_lastName}    ${v_emailAddress}    ${v_password}    ${v_titleAlert}    ${v_messageAlert}
+    #    fs_loadDataFromFileNewVersion    ${CURDIR}/Data.xlsx
+    fsand_Click Back    #    Close What's New
+    Wait Until Page Contains    ${Verify_SignIn_Form}    50s
+    #    Change environment
+    fsand_Change Environment    Staging
+    #    Click Sign Up Now to move to Sign Up form
+    Click Element    ${SignIn_SignUp}
+    #    Input First Name
+    fsand_Input First Name    ${v_firstName}
+    #    Input Last Name
+    fsand_Input Last Name    ${v_lastName}
+    #    input email address
+    fsand_Input Email Address_Sign Up    ${v_emailAddress}
+    #    input password
+    fsand_Input Password_Sign Up    ${v_password}
+    #    Click Sign Up Button
+    Click Element    ${SignUp_CreateButton}
+    #    Verify Title "Verify Email after Sign UP"
+    Wait Until Page Contains    ${v_titleAlert}    50s
+    #    Verify Mesage "Verify Email after Sign UP "
+    Wait Until Page Contains    ${v_messageAlert}    50s
+    #    Click OK button
+    fsand_ClickPositiveButton
+
+fsand_Sign Up Fill Value
+    [Arguments]    ${v_firstName}    ${v_lastName}    ${v_emailAddress}    ${v_password}
+    #    fs_loadDataFromFileNewVersion    ${CURDIR}/Data.xlsx
+    fsand_Click Back    #    Close What's New
+    Wait Until Page Contains    ${Verify_SignIn_Form}    50s
+    #    Change environment
+    fsand_Change Environment    Staging
+    #    Click Sign Up Now to move to Sign Up form
+    Click Element    ${SignIn_SignUp}
+    #    Input First Name
+    fsand_Input First Name    ${v_firstName}
+    #    Input Last Name
+    fsand_Input Last Name    ${v_lastName}
+    #    input email address
+    fsand_Input Email Address_Sign Up    ${v_emailAddress}
+    #    input password
+    fsand_Input Password_Sign Up    ${v_password}
