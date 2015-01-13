@@ -1,0 +1,1 @@
+With new app has what's new, should disable "Wait for Activity"
