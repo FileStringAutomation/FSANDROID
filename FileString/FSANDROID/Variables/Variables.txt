@@ -2,7 +2,7 @@
 Library           AppiumLibrary
 Variables         ../GUIMAP/Android/objectRepositories.py
 Resource          ../Resources/TestlinkResources.txt
-Resource          ../../FileString/Resources/CommonKeywordsForAllPlatforms.txt
+Resource          ../Resources/CommonKeywordsForAllPlatforms.txt
 
 *** Variables ***
 ${v_remoteUrl}    http://localhost:4723/wd/hub

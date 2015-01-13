@@ -2,10 +2,10 @@
 Resource          ../../Variables/Variables.txt
 
 *** Keywords ***
-fsand_OpenFileStringApplication
+fsand_Open File String Application
     Open Application    http://localhost:4723/wd/hub
 
-fsand_ChangeEnvironment
+fsand_Change Environment
     [Arguments]    ${v_environment}
     [Documentation]    name=Production|Staging|Development
     Input Password    ${SignIn_Password}    opensesame
@@ -15,8 +15,11 @@ fsand_ChangeEnvironment
 fsand_ClickPositiveButton
     Click Element    ${OK_Button}
 
-fsand_ClickUp
+fsand_Click Up
     Click Element    Action_Up
 
-fsand_ClickHome
+fsand_Click Home
     Click Element    Action_Home
+
+fsand_Navigate To Sign Up Screen
+    Click Element    ${SignIn_SignUp}

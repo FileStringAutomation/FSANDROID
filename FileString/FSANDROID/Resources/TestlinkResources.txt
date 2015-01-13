@@ -1,10 +1,11 @@
 *** Settings ***
+Library           TestlinkAPIClient    ${tl_APIKey}    ${tl_testPlanID}    ${tl_buildDescription}
 
 *** Variables ***
 ${tl_APIKey}      6548fe711c80a512412c88a44817a7f9
 ${tl_testPlanID}    16840
 ${tl_buildDescription}    This is test automation running on robot framework
-${tl_isReportToTestlink}    TRUE    # TRUE or FALSE
+${tl_isReportToTestlink}    FALSE    # TRUE or FALSE
 
 *** Keywords ***
 TestCase Pass

@@ -6,11 +6,11 @@ Library           AppiumLibrary
 *** Test Cases ***
 fs[1234]_Sign up with valid email never sign up before and password
     fs_loadDataFromFileNewVersion    ${CURDIR}/Data.xlsx
-    fsand_OpenFileStringApplication
+    fsand_Open File String Application
     #    fsand_ClickUp    sta25.114@yopmail.com
     #    Del User on DataBase    fsand_Delete User Information In Database    sta25.114@yopmail.com
     #    Change environment
-    fsand_ChangeEnvironment    Staging
+    fsand_Change Environment    Staging
     #    Click Sign Up Now to move to Sign Up form
     Click Element    ${SignIn_SignUp}
     #    Input First Name
@@ -29,6 +29,7 @@ fs[1234]_Sign up with valid email never sign up before and password
     Wait Until Page Contains    ${v_data[5]}    20s    #    ${Message_SignUp_VerifyEmail}    text=${v_data[5]}
     #    Click OK button
     fsand_ClickPositiveButton
+    [Teardown]    Close All Applications
 
 Sign up with Secondary email but not verify
 

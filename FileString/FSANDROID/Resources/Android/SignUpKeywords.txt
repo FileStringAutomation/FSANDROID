@@ -1,7 +1,6 @@
 *** Settings ***
 Resource          BusinessKeywordsForAndroid.txt
 Library           DatabaseLibrary
-Resource          D:\\NguyenDuyLinh\\FSAndroid\\FileString.Git.AT\\FileString\\Resources\\Windows\\SignUpKeywords.txt
 
 *** Keywords ***
 fsand_Input Email Address_Sign Up

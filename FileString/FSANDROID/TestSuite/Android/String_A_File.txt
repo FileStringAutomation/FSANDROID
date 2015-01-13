@@ -1,0 +1,6 @@
+*** Settings ***
+Resource          ../../Resources/Android/SignInKeywords.txt
+
+*** Test Cases ***
+String File Successful
+    fsand_Sign In Successful

@@ -20,6 +20,3 @@ fswin_Generate X Email Address
     \    ${v_currentEmailAddress}=    fswin_Generate An Email Address
     \    Append To List    ${v_listOfEmailAddress}    ${v_currentEmailAddress}
     [Return]    ${v_listOfEmailAddress}
-
-fsand_Navigate To Sign Up Screen
-    Click Element    ${SignIn_SignUp}

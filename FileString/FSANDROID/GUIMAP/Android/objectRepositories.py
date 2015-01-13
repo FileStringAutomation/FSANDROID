@@ -57,14 +57,26 @@ Message_SignUp_VerifyEmail = "Look out for the verification email from FileStrin
 
 
 
-
-
-
-
-
-
-
-
+"""
+@Author: Minh.nguyen
+@Date Created: Jan 09, 2015
+@Description: All elements in Home Screen
+"""
+Home_Back = "id=android:id/up"
+Home_Logo = "id=android:id/home"
+Home_Title = "id=android:id/action_bar_title"
+Home_Search = "id=com.filestring.lattedouble:id/menu_files_list_action_search"
+Home_Add = "id=com.filestring.lattedouble:id/menu_files_list_action_add"
+Home_Add_StringAFile = "id=com.filestring.lattedouble:id/string_file"
+Home_Add_GoogleDrive = "id=com.filestring.lattedouble:id/string_google_drive"
+Home_Add_Dropbox = "id=com.filestring.lattedouble:id/string_dropbox"
+Home_More = ""
+Home_More_Sort = "id=android:id/title"
+Home_More_ShowInactiveFiles_Title = "id=android:id/title"
+Home_More_ShowInactiveFiles_Checkbox = "id=android:id/checkbox"
+Home_Hint = "id=com.filestring.lattedouble:id/hint_string"
+Home_EmptyIcon = "id=com.filestring.lattedouble:id/empty_icon"
+Home_EmptyText = "id=com.filestring.lattedouble:id/empty_text"
 
 
 

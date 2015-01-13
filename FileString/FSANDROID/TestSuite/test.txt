@@ -1,0 +1,30 @@
+*** Settings ***
+Resource          ../Resources/Android/SignInKeywords.txt
+Library           Remote    127.0.0.1:8271    WITH NAME    Sikuli
+
+*** Test Cases ***
+test
+    Object Exists    D:\\Sikuli\\FSIcon.png    0.9    10
+    Sikuli.Click Object    D:\\Sikuli\\FSIcon.png    10    0.9
+    Object Exists    D:\\Sikuli\\EmailAddress2.png    0.9    10
+    Sikuli.Type At Object    D:\\Sikuli\\EmailAddress2.png    testingaccount4@yopmail.com    10    0.9
+    Sikuli.Type At Object    D:\\Sikuli\\Password.png    1234    10    0.9
+    Sikuli.Click Object    D:\\Sikuli\\SignIn.png    10    0.9
+    Sleep    3s
+    Object Exists    D:\\Sikuli\\Home.png    0.9    10
+    Sikuli.Click Object    D:\\Sikuli\\Home.png    10    0.9
+    Object Exists    D:\\Sikuli\\Settings.png    0.9    10
+    Sikuli.Click Object    D:\\Sikuli\\Settings.png    10    0.9
+    Object Exists    D:\\Sikuli\\MyAccount.png    0.9    10
+    Sikuli.Click Object    D:\\Sikuli\\MyAccount.png    10    0.9
+    Object Exists    D:\\Sikuli\\SignOut.png    0.9    10
+    Sikuli.Click Object    D:\\Sikuli\\SignOut.png    10    0.9
+    Object Exists    D:\\Sikuli\\EmailAddressInputed.png    0.9    10
+    [Teardown]    Close All Applications
+
+*** Keywords ***
+fswin_Click Open Button To Open File From Receive Message
+    [Arguments]    ${v_libName}=Remote
+    ${v_isOpenButtonExist}=    Run Keyword    ${v_libName}.Rn Wait For Element Exist    ${gmwin_notificationWhenSentFileSuccessfully[4]}
+    Run Keyword If    ${v_isOpenButtonExist}==False    Fail    Open button is not exist in message receive file    ELSE    Run Keyword    ${v_libName}.Rn Click Element
+    ...    ${gmwin_notificationWhenSentFileSuccessfully[4]}
