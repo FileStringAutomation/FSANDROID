@@ -3,4 +3,10 @@ Resource          ../../Resources/Android/SignInKeywords.txt
 
 *** Test Cases ***
 String File Successful
-    fsand_Sign In Successful
+    fsand_Delete User Information In Database    staandroidsecondunvery@yopmail.com
+
+test
+    ${v_isConnectedToDatabase}=    Run Keyword And Ignore Error    DatabaseLibrary.Connect To Database Using Custom Params    adodbapi    'Provider=SQLOLEDB.1;Data Source=${v_databaseSource};Initial Catalog=${v_databaseName};User Id=${v_databaseUsername};Password=${v_databaseUserPassword};'
+    Run Keyword If    '${v_isConnectedToDatabase[0]}'=='FAIL'    Fail    Could not connect to database, the error was: "${v_isConnectedToDatabase[1]}"
+    @{v_queryResult}=    DatabaseLibrary.Query    select * from UserEmailAddress where EmailAddress='staandroidsecondunvery@yopmail.com'
+    Log Many    @{v_queryResult}

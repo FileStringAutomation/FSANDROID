@@ -36,3 +36,13 @@ fsand_Delete User Information In Database
     Comment    #    Delete 4: from [User] table
     Comment    Run Keyword And Ignore Error    DatabaseLibrary.Execute Sql String    DELETE FROM [User] WHERE Username='${v_emailAddress}'
     Comment    DatabaseLibrary.Disconnect From Database
+
+fsand_vẻifySignUpSuccessful
+    [Arguments]    ${v_bigLabel}    ${v_message}
+    Comment    Verify in current page
+    fswin_elementTextShouldBe    ${gmwin_verificationPage[0]}    ${v_bigLabel}
+    ${v_text}=    fswin_getText    ${gmwin_verificationPage[1]}
+    ${v_text}=    Replace String    ${v_text}    \n    ${SPACE}
+    Should Be Equal    ${v_text.strip()}    ${v_message}
+    Rn Wait For Element    ${gmwin_verificationPage[2]}    ${v_timeOutInWindows}
+    Rn Wait For Element    ${gmwin_verificationPage[3]}    ${v_timeOutInWindows}

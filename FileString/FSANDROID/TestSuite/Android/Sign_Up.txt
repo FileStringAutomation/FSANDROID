@@ -6,24 +6,20 @@ Library           AppiumLibrary
 
 *** Test Cases ***
 fs[0001]_Can sign up with valid email never sign up before and password
-    fs_loadDataFromFileNewVersion    ${CURDIR}/Data.xlsx
+    fs_loadDataFromFileNewVersion     ${CURDIR}/Data.xlsx
     fsand_Sign Up    ${v_data[0]}    ${v_data[1]}    ${v_data[2]}    ${v_data[3]}    ${v_data[4]}    ${v_data[5]}
-    [Teardown]
 
 fs[0002]_Can sign up with Secondary email but not verify
-    fs_loadDataFromFileNewVersion    ${CURDIR}/Data.xlsx
+    fs_loadDataFromFileNewVersion     ${CURDIR}/Data.xlsx
     fsand_Sign Up    ${v_data[0]}    ${v_data[1]}    ${v_data[2]}    ${v_data[3]}    ${v_data[4]}    ${v_data[5]}
-    [Teardown]
 
 fs[0003]_Can sing up with email has "space" in first and end letter
     fs_loadDataFromFileNewVersion    ${CURDIR}/Data.xlsx
     fsand_Sign Up    ${v_data[0]}    ${v_data[1]}    ${v_data[2]}    ${v_data[3]}    ${v_data[4]}    ${v_data[5]}
-    [Teardown]
 
 fs[0004]_Can sign up with email that received file
     fs_loadDataFromFileNewVersion    ${CURDIR}/Data.xlsx
     fsand_Sign Up    ${v_data[0]}    ${v_data[1]}    ${v_data[2]}    ${v_data[3]}    ${v_data[4]}    ${v_data[5]}
-    [Teardown]
 
 fs[0005]_Can sign up with password has special characters
     fs_loadDataFromFileNewVersion    ${CURDIR}/Data.xlsx
@@ -42,7 +38,6 @@ fs[0008]_Can sign up with password length from 4 to 36 characters
     fsand_Sign Up    ${v_data[0]}    ${v_data[1]}    ${v_data[2]}    ${v_data[3]}    ${v_data[4]}    ${v_data[5]}
 
 fs[0009]_Can not sign up with empty First Name
-    [Setup]    Open Application    ${v_remoteUrl}    ${v_alias}
     fs_loadDataFromFileNewVersion    ${CURDIR}/Data.xlsx
     fsand_Sign Up Fill Value    ${EMPTY}    ${v_data[0]}    ${v_data[1]}    ${v_data[2]}
     Element Should Be Disabled    ${SignUp_CreateButton}
@@ -106,7 +101,6 @@ fs[0022]_Can not sign up with Service has any problem
     fsand_Sign Up    ${v_data[0]}    ${v_data[1]}    ${v_data[2]}    ${v_data[3]}    ${v_data[4]}    ${v_data[5]}
 
 fs[0000]_Test
-    fs_loadDataFromFileNewVersion    ${CURDIR}/Data.xlsx
     fsand_Open File String Application
     #    Run Keywords | fsand_Delete User Information In Database | ${v_data[2]} | AND | Close All Applications
     fsand_Delete User Information In Database    ${v_data[2]}
