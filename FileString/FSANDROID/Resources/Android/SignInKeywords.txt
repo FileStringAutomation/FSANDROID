@@ -7,8 +7,18 @@ Resource          BusinessKeywordsForAndroid.txt
 fsand_Sign In Successful
     [Arguments]    ${v_emailAddress}    ${v_password}
     fsand_Change Environment    Staging
-    Input Text    id=com.filestring.lattedouble:id/edtSignInEmail    ${v_emailAddress}
-    Input Password    id=com.filestring.lattedouble:id/edtSignInPassword    ${v_password}
-    Click Element    id=com.filestring.lattedouble:id/btnSignIn
+    fsand_Input Email Address    ${v_emailAddress}
+    fsand_Input Password    ${v_password}
+    fsand_Click Sign In
+    #    verify after sign in
 
 fsand_Input Email Address
+    [Arguments]    ${v_emailAddress}
+    Input Text    ${SignIn_EmailAddress}    ${v_emailAddress}
+
+fsand_Input Password
+    [Arguments]    ${v_password}
+    Input Password    ${SignIn_Password}    ${v_password}
+
+fsand_Click Sign In
+    Click Element    ${SignIn_SignInButton}

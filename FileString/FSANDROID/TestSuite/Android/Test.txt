@@ -1,0 +1,10 @@
+*** Settings ***
+Test Setup        Open Application    ${v_remoteUrl}    ${v_alias}
+Test Teardown     Run Keywords    fsand_Delete User Information In Database    ${v_data[2]}    AND    Close Application
+Resource          ../../Resources/Android/SignUpKeywords.txt
+Library           AppiumLibrary
+
+*** Test Cases ***
+fs[0002]_Test
+    fs_loadDataFromFileNewVersion    ${CURDIR}/Data.xlsx
+    fsand_Sign Up    ${v_data[0]}    ${v_data[1]}    ${v_data[2]}    ${v_data[3]}    ${v_data[4]}    ${v_data[5]}

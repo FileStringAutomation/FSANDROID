@@ -1,6 +1,8 @@
 *** Settings ***
 Resource          BusinessKeywordsForAndroid.txt
 Library           DatabaseLibrary
+Library           Selenium2Library
+Library           robotmail
 
 *** Keywords ***
 fsand_Input Email Address_Sign Up
@@ -25,24 +27,70 @@ fsand_Delete User Information In Database
     ${v_isConnectedToDatabase}=    Run Keyword And Ignore Error    DatabaseLibrary.Connect To Database Using Custom Params    adodbapi    'Provider=SQLOLEDB.1;Data Source=${v_databaseSource};Initial Catalog=${v_databaseName};User Id=${v_databaseUsername};Password=${v_databaseUserPassword};'
     Run Keyword If    '${v_isConnectedToDatabase[0]}'=='FAIL'    Fail    Could not connect to database, the error was: "${v_isConnectedToDatabase[1]}"
     #    Get current account ID based on its email address
-    ${v_queryResult}=    DatabaseLibrary.Query    select * from UserEmailAddress where EmailAddress='${v_emailAddress}'
-    ${v_userID}=    Set Variable    ${v_queryResult[0][1]}
-    #    Delete 1: from RegisteredDevice table
-    Run Keyword And Ignore Error    DatabaseLibrary.Execute Sql String    DELETE FROM WizardUser WHERE UserID='${v_userID}' ; DELETE FROM [User] WHERE UserID='${v_userID}' ;
-    #    Delete 2: from ServicePreference table
-    Comment    Run Keyword And Ignore Error    DatabaseLibrary.Execute Sql String    DELETE FROM ServicePreference WHERE UserID='${v_userID}'
-    Comment    #    Delete 3: from UserEmailAddress table
-    Comment    Run Keyword And Ignore Error    DatabaseLibrary.Execute Sql String    DELETE FROM UserEmailAddress WHERE EmailAddress='${v_emailAddress}'
-    Comment    #    Delete 4: from [User] table
-    Comment    Run Keyword And Ignore Error    DatabaseLibrary.Execute Sql String    DELETE FROM [User] WHERE Username='${v_emailAddress}'
-    Comment    DatabaseLibrary.Disconnect From Database
+    ${v_userID}=    DatabaseLibrary.Query    select UserID from [User] where Username='${v_emailAddress.strip()}'
+    ${v_userID}=    Replace String    ${v_userID[0][0]}    {    ${EMPTY}
+    ${v_userID}=    Replace String    ${v_userID}    }    ${EMPTY}
+    #    Delete User In database
+    Run Keyword And Ignore Error    DatabaseLibrary.Execute Sql String    DELETE FROM NotificationDeviceToken WHERE DeviceOwnerId = '${v_userID}' ; DELETE FROM wizarduser WHERE userid = '${v_userID}' ; DELETE FROM [user] WHERE username = '${v_emailAddress.strip()}'
+    #    Verify Account must not exist in database
+    ${v_isAccountExistInDatabase}=    Run Keyword And Ignore Error    DatabaseLibrary.Check If Exists In Database    select UserID from [User] where Username='${v_emailAddress.strip()}'
+    Run Keyword If    '${v_isAccountExistInDatabase[0]}'=='PASS'    Fail    Your account: "${v_emailaddress}" still exist in database after delete!!!
 
-fsand_vẻifySignUpSuccessful
-    [Arguments]    ${v_bigLabel}    ${v_message}
-    Comment    Verify in current page
-    fswin_elementTextShouldBe    ${gmwin_verificationPage[0]}    ${v_bigLabel}
-    ${v_text}=    fswin_getText    ${gmwin_verificationPage[1]}
-    ${v_text}=    Replace String    ${v_text}    \n    ${SPACE}
-    Should Be Equal    ${v_text.strip()}    ${v_message}
-    Rn Wait For Element    ${gmwin_verificationPage[2]}    ${v_timeOutInWindows}
-    Rn Wait For Element    ${gmwin_verificationPage[3]}    ${v_timeOutInWindows}
+fsand_verify Email When Register An Account
+    [Arguments]    ${v_firstname}    ${v_emailAddress}    ${v_password}
+    robotmail.Open Mailbox    imap.gmail.com    ${v_emailAddress}    ${v_password}    ${True}
+    ${v_emailID}=    robotmail.Wait For Mail
+    #    Email body
+    Comment    ${v_emailBody}=    ImapLibrary.Get Email Body    ${v_emailID}
+    #    Email content
+    Comment    ${v_result}=    ImapLibrary.Get Matches From Email    ${v_emailID}    [\\w\\W]*[\\s\\n]*Hi ${v_firstname},[\\n\\s]*To complete your FileString sign up process, we need you to verify your email address. This ensures that someone else isn't trying to use your address. The address entered to create this account is${v_emailAddress}.[\\s\\n]*Click the button below to verify your email address and create your FileString account:[\\s\\n]*Verify Your Email Address[\\n\\s]*If you did not sign up for this FileString account, ignore this email and the account under this email address will not be created.[\\s\\n]*Thank you.[\\s\\n]*The FileString Team - "String It"[\\w\\W]*
+    ${v_allLinks}=    robotmail.Get All Links From Email    ${v_emailID}
+    robotmail.Close Mailbox
+    Comment    ${v_length}=    Get Length    ${v_result}
+    Comment    Run Keyword If    ${v_length}!=1    Fail    Email content does not match with email's format
+    Set Test Variable    ${v_allLinks}
+
+fsand_goto Link on Email to Verify Email Address
+    [Arguments]    ${v_verifyLink}
+    fsweb_Open Optional Browser And Set Selenium Speed    ${v_verifyLink}    gc    30s
+    #    Verify page contain "Email Address is verified"
+    ${v_result}=    Run Keyword And Ignore Error    Wait Until Page Contains    Your email address is verified
+    Close All Browsers
+    Run Keyword If    '${v_result[0]}'=='FAIL'    Fail    The link to verify email address is incorrect! Or Email address is not verified. Error message was: "${v_result[1]}"
+
+fsweb_Open Optional Browser And Set Selenium Speed
+    [Arguments]    ${v_baseUrl}    ${v_browser}    ${v_seleniumSpeed}
+    Open Browser    ${v_baseUrl}    ${v_browser}
+    Maximize Browser Window
+    Set Selenium Timeout    ${v_seleniumSpeed}
+
+fsand_Sign Up Successful
+    [Arguments]    ${v_firstName}    ${v_lastName}    ${v_emailAddress}    ${v_password}    ${v_titleAlert}    ${v_messageAlert}
+    #    fs_loadDataFromFileNewVersion    ${CURDIR}/Data.xlsx
+    fsand_Click Back    #    Close What's New
+    Wait Until Page Contains    ${Verify_SignIn_Form}    50s
+    #    Change environment
+    fsand_Change Environment    Staging
+    #    Click Sign Up Now to move to Sign Up form
+    Click Element    ${SignIn_SignUp}
+    #    Input First Name
+    fsand_Input First Name    ${v_firstName}
+    #    Input Last Name
+    fsand_Input Last Name    ${v_lastName}
+    #    input email address
+    fsand_Input Email Address_Sign Up    ${v_emailAddress}
+    #    input password
+    fsand_Input Password_Sign Up    ${v_password}
+    #    Click Sign Up Button
+    fsand_Click Sign Up
+    #    Verify Title "Verify Email after Sign UP"
+    Wait Until Page Contains    ${v_titleAlert}    50s
+    #    Verify Mesage "Verify Email after Sign UP "
+    Wait Until Page Contains    ${v_messageAlert}    50s
+    #    Click OK button
+    fsand_ClickPositiveButton
+
+fsand_Template_Cannot Sign Up
+
+fsand_Click Sign Up
+    Click Element    ${SignUp_CreateButton}
