@@ -38,9 +38,13 @@ SignUp_CreateButton = "id=com.filestring.lattedouble:id/txtSignUp_Create"
 SignUp_SignIn = "id=com.filestring.lattedouble:id/back_signin"
 
 # Error message
-SignUp_ErrorMessage_Title = "id=com.filestring.lattedouble:id/dlg_title"
+#Positive button
 OK_Button = "id=com.filestring.lattedouble:id/dlg_btn_positive"
-
+#Negative button
+Resend_Email_ButtonById = "id=com.filestring.lattedouble:id/dlg_btn_negative"
+Close_ButtonById = "id=com.filestring.lattedouble:id/dlg_btn_positive"
+Resend_Email_ButtonByText = "identifier=Resend Email"
+Close_ButtonByText = "identifier=Close"
 """
 @Author: Linh.nguyen
 @Date Created: Jan 07, 2015
@@ -58,6 +62,7 @@ KeyEvent_Menu = 82
 """
 Verify_SignIn_Form = "Forgot your password?"
 Verify_SignUP_Form= "New Account"
+Verify_AllFiles_Screen = "All Files"
 
 """
 @Author: Minh.nguyen

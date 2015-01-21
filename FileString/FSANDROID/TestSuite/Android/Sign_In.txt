@@ -1,36 +1,52 @@
 *** Settings ***
+Test Setup        Run Keywords    fs_loadDataFromFileNewVersion    ${v_pathToSignInData}    AND    Open Application    ${v_remoteUrl}    ${v_alias}
+Test Teardown     Close Application
 Resource          ../../Resources/Android/SignInKeywords.txt
+Library           AppiumLibrary
 
 *** Test Cases ***
 fs[1001]_Can sign in with Email has signed up and verified already
-    [Setup]    Open Application    ${v_remoteUrl}    ${v_alias}
-    fsand_Sign In Successful    minh.nguyen@filestring.com    bommeo11
-    Sleep    5s
-    [Teardown]    Close All Applications
+    fsand_Sign In Successful    ${v_data[0]}    ${v_data[1]}
 
 fs[1002]_Can sign in with Email has "space" in first and end
+    fsand_Sign In Successful    ${v_data[0]}    ${v_data[1]}
 
 fs[1003]_Can sign in After reset password with new password
 
 fs[1004]_Can sign in After change password on web with new password
-    Click Button
 
 fs[1005]_Can sign in After change primary email on web with new Email
 
 fs[1006]_Can Sign in with secondary email
+    fsand_Sign In Successful    ${v_data[0]}    ${v_data[1]}
 
-fs[1007]_Can Email has not sign up yet
+fs[1007]_Can not Sign in with Email has not sign up yet
+    fsand_Sign In Fail Template    ${v_data[0]}    ${v_data[1]}    ${v_data[2]}    ${v_data[3]}
 
-fs[1008]_Can Invalid email
+fs[1008]_Can not Sign in with Invalid email
+    fsand_Sign In Fail Template    ${v_data[0]}    ${v_data[1]}    ${v_data[2]}    ${v_data[3]}
 
-fs[1009]_Can Wrong password
+fs[1009]_Can not Sign in with Wrong password
+    fsand_Sign In Fail Template    ${v_data[0]}    ${v_data[1]}    ${v_data[2]}    ${v_data[3]}
 
 fs[1010]_Can not sign in with unverified secondary email
+    fsand_Sign In Fail Template    ${v_data[0]}    ${v_data[1]}    ${v_data[2]}    ${v_data[3]}
 
-fs[1011]_Can Empty any value - Email or Password
+fs[1011]_Can not Sign in with Empty any value - Email or Password
+    fsand_Click Back
+    fsand_Verify Sign In Screen
+    fsand_Input Email Address    ${v_data[0]}
+    fsand_Sign In Button Disable
+    Clear Text    ${SignIn_EmailAddress}
+    fsand_Input Password    ${v_data[1]}
+    fsand_Sign In Button Disable
 
-fs[1012]_Can Email has signed up but un-verify
+fs[1012]_Can not Sign in with Email has signed up but un-verify
+    fsand_Sign In Fail Template    ${v_data[0]}    ${v_data[1]}    ${v_data[2]}    ${v_data[3]}
 
-fs[1013]_Can Email is secondary email already
+fs[1013]_Can Sign in with Email is secondary email already
+    fsand_Sign In Successful    ${v_data[0]}    ${v_data[1]}
 
-fs[1014]_Can Without network
+fs[1014]_Can not Sign in with Without network
+    #    turn off password
+    fsand_Sign In Fail Template    ${v_data[0]}    ${v_data[1]}    ${v_data[2]}    ${v_data[3]}

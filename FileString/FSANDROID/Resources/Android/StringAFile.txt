@@ -1,0 +1,6 @@
+*** Settings ***
+Resource          BusinessKeywordsForAndroid.txt
+Resource          SignInKeywords.txt
+
+*** Variables ***
+${v_pathToStringAFileDataFile}    ${CURDIR}/../../DataSet/ShareNewFile.xlsx

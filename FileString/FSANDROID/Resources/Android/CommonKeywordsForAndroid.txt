@@ -1,6 +1,7 @@
 *** Settings ***
 Resource          ../../Variables/Variables.txt
 Resource          SignUpKeywords.txt
+Resource          SignInKeywords.txt
 
 *** Keywords ***
 fsand_Open File String Application
@@ -9,62 +10,32 @@ fsand_Open File String Application
 fsand_Change Environment
     [Arguments]    ${v_environment}
     [Documentation]    name=Production|Staging|Development
-    Input Password    ${SignIn_Password}    opensesame
-    Click Element    name=${v_environment}
-    Click Element    ${OK_Button}
+    ${v_trueOrFalse}=    Run Keyword And Ignore Error    AppiumLibrary.Input Password    ${SignIn_Password}    opensesame
+    Run Keyword If    '${v_trueOrFalse[0]}'=='FAIL'    Fail    Can't input to Password at Sign
+    AppiumLibrary.Click Element    name=${v_environment}
+    AppiumLibrary.Click Element    ${OK_Button}
 
-fsand_ClickPositiveButton
-    Click Element    ${OK_Button}
+fsand_Click Positive Button
+    AppiumLibrary.Click Element    ${OK_Button}
+
+fsand_Click Negative Button
+    AppiumLibrary.Click Element    ${Resend_Email_ButtonById}
 
 fsand_Click Back
-    Click Element    ${Home_Back}
+    ${v_result}=    Run Keyword And Ignore Error    AppiumLibrary.Click Element    ${Home_Back}
+    Run Keyword If    '${v_result[0]}'=='FAIL'    Fail    message cua anh
 
 fsand_Click Home
-    Click Element    ${Home_Logo}
+    AppiumLibrary.Click Element    ${Home_Logo}
 
-fsand_Navigate To Sign Up Screen
-    Click Element    ${SignIn_SignUp}
+fsand_Navigate Sign In To Sign Up Screen
+    AppiumLibrary.Click Element    ${SignIn_SignUp}
 
-fsand_Sign Up
-    [Arguments]    ${v_firstName}    ${v_lastName}    ${v_emailAddress}    ${v_password}    ${v_titleAlert}    ${v_messageAlert}
-    #    fs_loadDataFromFileNewVersion    ${CURDIR}/Data.xlsx
-    fsand_Click Back    #    Close What's New
-    Wait Until Page Contains    ${Verify_SignIn_Form}    50s
-    #    Change environment
-    fsand_Change Environment    Staging
-    #    Click Sign Up Now to move to Sign Up form
-    Click Element    ${SignIn_SignUp}
-    #    Input First Name
-    fsand_Input First Name    ${v_firstName}
-    #    Input Last Name
-    fsand_Input Last Name    ${v_lastName}
-    #    input email address
-    fsand_Input Email Address_Sign Up    ${v_emailAddress}
-    #    input password
-    fsand_Input Password_Sign Up    ${v_password}
-    #    Click Sign Up Button
-    Click Element    ${SignUp_CreateButton}
-    #    Verify Title "Verify Email after Sign UP"
-    Wait Until Page Contains    ${v_titleAlert}    50s
-    #    Verify Mesage "Verify Email after Sign UP "
-    Wait Until Page Contains    ${v_messageAlert}    50s
-    #    Click OK button
-    fsand_ClickPositiveButton
+fsand_Verify Sign In Screen
+    AppiumLibrary.Wait Until Page Contains    ${Verify_SignIn_Form}    50s
 
-fsand_Sign Up Fill Value
-    [Arguments]    ${v_firstName}    ${v_lastName}    ${v_emailAddress}    ${v_password}
-    #    fs_loadDataFromFileNewVersion    ${CURDIR}/Data.xlsx
-    fsand_Click Back    #    Close What's New
-    Wait Until Page Contains    ${Verify_SignIn_Form}    50s
-    #    Change environment
-    fsand_Change Environment    Staging
-    #    Click Sign Up Now to move to Sign Up form
-    Click Element    ${SignIn_SignUp}
-    #    Input First Name
-    fsand_Input First Name    ${v_firstName}
-    #    Input Last Name
-    fsand_Input Last Name    ${v_lastName}
-    #    input email address
-    fsand_Input Email Address_Sign Up    ${v_emailAddress}
-    #    input password
-    fsand_Input Password_Sign Up    ${v_password}
+fsand_Verify All Files Screen
+    AppiumLibrary.Wait Until Page Contains    ${Verify_AllFiles_Screen}    50s
+
+fsand_Click Close Button
+    AppiumLibrary.Click Element    ${Close_ButtonByText}

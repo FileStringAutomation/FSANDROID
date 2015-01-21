@@ -1,25 +1,85 @@
 *** Settings ***
 Resource          BusinessKeywordsForAndroid.txt
 Library           DatabaseLibrary
-Library           Selenium2Library
 Library           robotmail
+Library           Selenium2Library
+
+*** Variables ***
 
 *** Keywords ***
+fsand_Sign Up Full
+    [Arguments]    ${v_firstName}    ${v_lastName}    ${v_emailAddress}    ${v_password}    ${v_titleAlert}    ${v_messageAlert}
+    #    fs_loadDataFromFileNewVersion    ${CURDIR}/Data.xlsx
+    fsand_Click Back    #    Close What's New
+    fsand_Verify Sign In Screen
+    #    Change environment
+    fsand_Change Environment    Staging
+    #    Click Sign Up Now to move to Sign Up form
+    fsand_Navigate Sign In To Sign Up Screen
+    #    Input First Name
+    fsand_Input First Name    ${v_firstName}
+    #    Input Last Name
+    fsand_Input Last Name    ${v_lastName}
+    #    input email address
+    fsand_Input Email Address_Sign Up    ${v_emailAddress}
+    #    input password
+    fsand_Input Password_Sign Up    ${v_password}
+    #    Click Sign Up Button
+    fsand_Click Sign Up Button
+    #    Verify Title "Verify Email after Sign UP"
+    fsand_Verify Title Alert    ${v_titleAlert}
+    #    Verify Mesage "Verify Email after Sign UP "
+    fsand_Verify Message Alert    ${v_messageAlert}
+    #    Click OK button
+    fsand_Click Positive Button
+
+fsand_Sign Up Just Fill All Value
+    [Arguments]    ${v_firstName}    ${v_lastName}    ${v_emailAddress}    ${v_password}
+    #    fs_loadDataFromFileNewVersion    ${CURDIR}/Data.xlsx
+    fsand_Click Back    #    Close What's New
+    fsand_Verify Sign In Screen
+    #    Change environment
+    fsand_Change Environment    Staging
+    #    Click Sign Up Now to move to Sign Up form
+    fsand_Navigate Sign In To Sign Up Screen
+    #    Input First Name
+    fsand_Input First Name    ${v_firstName}
+    #    Input Last Name
+    fsand_Input Last Name    ${v_lastName}
+    #    input email address
+    fsand_Input Email Address_Sign Up    ${v_emailAddress}
+    #    input password
+    fsand_Input Password_Sign Up    ${v_password}
+
 fsand_Input Email Address_Sign Up
     [Arguments]    ${v_EmailAdress}
-    Input Text    ${SignUp_EmailAddress}    ${v_EmailAdress}
+    AppiumLibrary.Input Text    ${SignUp_EmailAddress}    ${v_EmailAdress}
 
 fsand_Input Password_Sign Up
     [Arguments]    ${v_Password}
-    Input Password    ${SignUp_CreatePassword}    ${v_Password}
+    AppiumLibrary.Input Password    ${SignUp_CreatePassword}    ${v_Password}
 
 fsand_Input First Name
     [Arguments]    ${v_FirstName}
-    Input Text    ${SignUp_Fistname}    ${v_FirstName}
+    AppiumLibrary.Input Text    ${SignUp_Fistname}    ${v_FirstName}
 
 fsand_Input Last Name
     [Arguments]    ${v_LastName}
-    Input Text    ${SignUp_Lastname}    ${v_LastName}
+    AppiumLibrary.Input Text    ${SignUp_Lastname}    ${v_LastName}
+
+fsand_Click Sign Up Button
+    AppiumLibrary.Click Element    ${SignUp_CreateButton}
+
+fsand_Sign Up Button Disable
+    Element Should Be Disabled    ${SignUp_CreateButton}
+
+fsand_Verify Title Alert
+    [Arguments]    ${v_titleAlert}
+    AppiumLibrary.Wait Until Page Contains    ${v_titleAlert}    50s
+
+fsand_Verify Message Alert
+    [Arguments]    ${v_messageAlert}
+    AppiumLibrary.Wait Until Page Contains    ${v_messageAlert}    50s
 
 fsand_Delete User Information In Database
     [Arguments]    ${v_emailAddress}
@@ -54,7 +114,7 @@ fsand_goto Link on Email to Verify Email Address
     [Arguments]    ${v_verifyLink}
     fsweb_Open Optional Browser And Set Selenium Speed    ${v_verifyLink}    gc    30s
     #    Verify page contain "Email Address is verified"
-    ${v_result}=    Run Keyword And Ignore Error    Wait Until Page Contains    Your email address is verified
+    ${v_result}=    Run Keyword And Ignore Error    Selenium2Library.Wait Until Page Contains    Congratulations!
     Close All Browsers
     Run Keyword If    '${v_result[0]}'=='FAIL'    Fail    The link to verify email address is incorrect! Or Email address is not verified. Error message was: "${v_result[1]}"
 
@@ -64,33 +124,13 @@ fsweb_Open Optional Browser And Set Selenium Speed
     Maximize Browser Window
     Set Selenium Timeout    ${v_seleniumSpeed}
 
+fsand_Mark All Emails As Read After Sign Up
+    [Arguments]    ${v_emailAddress}    ${v_password}
+    robotmail.Open Mailbox    imap.gmail.com    ${v_emailAddress}    ${v_password}    ${True}
+    robotmail.Mark Email As Read
+    #    robotmail.Delete All Emails
+    robotmail.Close Mailbox
+
 fsand_Sign Up Successful
-    [Arguments]    ${v_firstName}    ${v_lastName}    ${v_emailAddress}    ${v_password}    ${v_titleAlert}    ${v_messageAlert}
-    #    fs_loadDataFromFileNewVersion    ${CURDIR}/Data.xlsx
-    fsand_Click Back    #    Close What's New
-    Wait Until Page Contains    ${Verify_SignIn_Form}    50s
-    #    Change environment
-    fsand_Change Environment    Staging
-    #    Click Sign Up Now to move to Sign Up form
-    Click Element    ${SignIn_SignUp}
-    #    Input First Name
-    fsand_Input First Name    ${v_firstName}
-    #    Input Last Name
-    fsand_Input Last Name    ${v_lastName}
-    #    input email address
-    fsand_Input Email Address_Sign Up    ${v_emailAddress}
-    #    input password
-    fsand_Input Password_Sign Up    ${v_password}
-    #    Click Sign Up Button
-    fsand_Click Sign Up
-    #    Verify Title "Verify Email after Sign UP"
-    Wait Until Page Contains    ${v_titleAlert}    50s
-    #    Verify Mesage "Verify Email after Sign UP "
-    Wait Until Page Contains    ${v_messageAlert}    50s
-    #    Click OK button
-    fsand_ClickPositiveButton
 
 fsand_Template_Cannot Sign Up
-
-fsand_Click Sign Up
-    Click Element    ${SignUp_CreateButton}

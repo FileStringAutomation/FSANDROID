@@ -1,26 +1,30 @@
 *** Settings ***
 Resource          ../Resources/Android/SignInKeywords.txt
-Library           Remote    127.0.0.1:8271    WITH NAME    Sikuli
+Library           OperatingSystem
+Library           ImapLibrary
 
 *** Test Cases ***
 test
-    Object Exists    D:\\Sikuli\\FSIcon.png    0.9    10
-    Sikuli.Click Object    D:\\Sikuli\\FSIcon.png    10    0.9
-    Object Exists    D:\\Sikuli\\EmailAddress2.png    0.9    10
-    Sikuli.Type At Object    D:\\Sikuli\\EmailAddress2.png    testingaccount4@yopmail.com    10    0.9
-    Sikuli.Type At Object    D:\\Sikuli\\Password.png    1234    10    0.9
-    Sikuli.Click Object    D:\\Sikuli\\SignIn.png    10    0.9
-    Sleep    3s
-    Object Exists    D:\\Sikuli\\Home.png    0.9    10
-    Sikuli.Click Object    D:\\Sikuli\\Home.png    10    0.9
-    Object Exists    D:\\Sikuli\\Settings.png    0.9    10
-    Sikuli.Click Object    D:\\Sikuli\\Settings.png    10    0.9
-    Object Exists    D:\\Sikuli\\MyAccount.png    0.9    10
-    Sikuli.Click Object    D:\\Sikuli\\MyAccount.png    10    0.9
-    Object Exists    D:\\Sikuli\\SignOut.png    0.9    10
-    Sikuli.Click Object    D:\\Sikuli\\SignOut.png    10    0.9
-    Object Exists    D:\\Sikuli\\EmailAddressInputed.png    0.9    10
+    @{list}=    Create List    1    2    3    4    5
+    : FOR    ${v_index}    IN    @{list}
+    Log    ${v_index}
+
+test123
+    Open Application    http://localhost:4723/wd/hub
+    fsand_Click Back
+    ${status}    ${value}=    Run Keyword And Ignore Error    fsand_Input Email Address    12345
+    ${sta}=    Run Keyword And Return Status    fsand_Input Password    123
+    ${v_text}=    AppiumLibrary.Get Element Text    ${SignIn_EmailAddress}
+    ${v_textlength}=    Get Length    ${v_text}
     [Teardown]    Close All Applications
+
+createnewfolder
+    Comment    fsand_verify Email When Register An Account    linhduyng00    linhduyng00@gmail.com    tester1402
+    Comment    Log    ${v_allLinks}
+    robotmail.Open Mailbox    imap.gmail.com    linhduyng00@gmail.com    tester1402    ${True}
+    ${v_mailID}=    robotmail.Wait For Mail
+    ${v_allLinks}=    robotmail.Get All Links From Email    ${v_mailID}
+    Log    ${v_allLinks}
 
 *** Keywords ***
 fswin_Click Open Button To Open File From Receive Message
@@ -28,3 +32,16 @@ fswin_Click Open Button To Open File From Receive Message
     ${v_isOpenButtonExist}=    Run Keyword    ${v_libName}.Rn Wait For Element Exist    ${gmwin_notificationWhenSentFileSuccessfully[4]}
     Run Keyword If    ${v_isOpenButtonExist}==False    Fail    Open button is not exist in message receive file    ELSE    Run Keyword    ${v_libName}.Rn Click Element
     ...    ${gmwin_notificationWhenSentFileSuccessfully[4]}
+
+fswin_Create New Folder
+    [Arguments]    ${v_pathToFolder}    ${v_folderName}
+    OperatingSystem.Create Directory    ${v_pathToFolder}/${v_folderName}
+
+fswin_Delete Folder And All Files Inside
+    [Arguments]    ${v_pathToFolder}    ${v_folderName}
+    [Documentation]    This keyword will delete a folder and all files inside.
+    ...
+    ...    ATTENTION: this keyword will NOT click on any "revoke" button.
+    ${v_folderExist}=    Run Keyword And Return Status    OperatingSystem.Directory Should Exist    ${v_pathToFolder}/${v_folderName}
+    Run Keyword If    ${v_folderExist}==True    OperatingSystem.Empty Directory    ${v_pathToFolder}/${v_folderName}
+    OperatingSystem.Remove Directory    ${v_pathToFolder}/${v_folderName}

@@ -6,19 +6,37 @@ Resource          BusinessKeywordsForAndroid.txt
 *** Keywords ***
 fsand_Sign In Successful
     [Arguments]    ${v_emailAddress}    ${v_password}
+    Comment    fsand_Click Back
+    fsand_Verify Sign In Screen
     fsand_Change Environment    Staging
     fsand_Input Email Address    ${v_emailAddress}
     fsand_Input Password    ${v_password}
-    fsand_Click Sign In
+    fsand_Click Sign In Button
     #    verify after sign in
+    fsand_Verify All Files Screen
+
+fsand_Sign In Fail Template
+    [Arguments]    ${v_emailAddress}    ${v_password}    ${v_titleAlert}    ${v_messageAlert}
+    fsand_Click Back
+    fsand_Verify Sign In Screen
+    fsand_Change Environment    Staging
+    fsand_Input Email Address    ${v_emailAddress}
+    fsand_Input Password    ${v_password}
+    fsand_Click Sign In Button
+    fsand_Verify Title Alert    ${v_titleAlert}
+    fsand_Verify Message Alert    ${v_messageAlert}
+    fsand_Click Positive Button
 
 fsand_Input Email Address
     [Arguments]    ${v_emailAddress}
-    Input Text    ${SignIn_EmailAddress}    ${v_emailAddress}
+    AppiumLibrary.Input Text    ${SignIn_EmailAddress}    ${v_emailAddress}
 
 fsand_Input Password
     [Arguments]    ${v_password}
-    Input Password    ${SignIn_Password}    ${v_password}
+    AppiumLibrary.Input Password    ${SignIn_Password}    ${v_password}
 
-fsand_Click Sign In
-    Click Element    ${SignIn_SignInButton}
+fsand_Click Sign In Button
+    AppiumLibrary.Click Element    ${SignIn_SignInButton}
+
+fsand_Sign In Button Disable
+    Element Should Be Disabled    ${SignIn_SignInButton}
