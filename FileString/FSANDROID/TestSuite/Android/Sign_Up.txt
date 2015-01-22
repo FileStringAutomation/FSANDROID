@@ -1,17 +1,20 @@
 *** Settings ***
 Documentation     | AND | fsand_Mark All Emails As Read After Sign Up | ${v_data[2]} | ${v_data[3]}
 Test Setup        Run Keywords    fs_loadDataFromFileNewVersion    ${v_pathToSignUpData}    AND    Open Application    ${v_remoteUrl}    ${v_alias}
+...               AND    fsand_Close What's New
 Test Teardown     Run Keywords    fsand_Delete User Information In Database    ${v_data[2]}    AND    Close Application
 Resource          ../../Resources/Android/SignUpKeywords.txt
 Library           AppiumLibrary
 
 *** Test Cases ***
 fs[0000]_Can sign up with valid email never sign up before and password
+    fsand_Mark All Emails As Read After Sign Up    ${v_data[2]}    ${v_data[3]}
     fsand_Sign Up Full    ${v_data[0]}    ${v_data[1]}    ${v_data[2]}    ${v_data[3]}    ${v_data[4]}    ${v_data[5]}
     fsand_verify Email When Register An Account    ${v_data[0]}    ${v_data[2]}    ${v_data[3]}
     fsand_goto Link on Email to Verify Email Address    ${v_allLinks[1]}
     #    if service error ==> click ok then click again
     fsand_Sign In Successful    ${v_data[2]}    ${v_data[3]}
+    #    Sign Out
 
 fs[0002]_Can sign up with Secondary email but not verify
     fsand_Sign Up Full    ${v_data[0]}    ${v_data[1]}    ${v_data[2]}    ${v_data[3]}    ${v_data[4]}    ${v_data[5]}

@@ -7,8 +7,7 @@ Resource          BusinessKeywordsForAndroid.txt
 fsand_Sign In Successful
     [Arguments]    ${v_emailAddress}    ${v_password}
     Comment    fsand_Click Back
-    fsand_Verify Sign In Screen
-    fsand_Change Environment    Staging
+    Comment    fsand_Verify Sign In Screen
     fsand_Input Email Address    ${v_emailAddress}
     fsand_Input Password    ${v_password}
     fsand_Click Sign In Button

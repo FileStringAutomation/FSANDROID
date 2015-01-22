@@ -1,5 +1,6 @@
 *** Settings ***
 Test Setup        Run Keywords    fs_loadDataFromFileNewVersion    ${v_pathToSignInData}    AND    Open Application    ${v_remoteUrl}    ${v_alias}
+...               AND    fsand_Close What's New    AND    fsand_Change Environment    Staging
 Test Teardown     Close Application
 Resource          ../../Resources/Android/SignInKeywords.txt
 Library           AppiumLibrary

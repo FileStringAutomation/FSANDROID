@@ -10,12 +10,12 @@ Library           Selenium2Library
 fsand_Sign Up Full
     [Arguments]    ${v_firstName}    ${v_lastName}    ${v_emailAddress}    ${v_password}    ${v_titleAlert}    ${v_messageAlert}
     #    fs_loadDataFromFileNewVersion    ${CURDIR}/Data.xlsx
-    fsand_Click Back    #    Close What's New
+    Comment    fsand_Click Back    #    Close What's New
     fsand_Verify Sign In Screen
     #    Change environment
     fsand_Change Environment    Staging
     #    Click Sign Up Now to move to Sign Up form
-    fsand_Navigate Sign In To Sign Up Screen
+    fsand_Click Navigate Sign In To Sign Up Screen
     #    Input First Name
     fsand_Input First Name    ${v_firstName}
     #    Input Last Name
@@ -41,7 +41,7 @@ fsand_Sign Up Just Fill All Value
     #    Change environment
     fsand_Change Environment    Staging
     #    Click Sign Up Now to move to Sign Up form
-    fsand_Navigate Sign In To Sign Up Screen
+    fsand_Click Navigate Sign In To Sign Up Screen
     #    Input First Name
     fsand_Input First Name    ${v_firstName}
     #    Input Last Name
@@ -127,8 +127,8 @@ fsweb_Open Optional Browser And Set Selenium Speed
 fsand_Mark All Emails As Read After Sign Up
     [Arguments]    ${v_emailAddress}    ${v_password}
     robotmail.Open Mailbox    imap.gmail.com    ${v_emailAddress}    ${v_password}    ${True}
-    robotmail.Mark Email As Read
-    #    robotmail.Delete All Emails
+    Comment    robotmail.Mark Email As Read
+    robotmail.Delete All Emails
     robotmail.Close Mailbox
 
 fsand_Sign Up Successful

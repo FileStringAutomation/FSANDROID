@@ -86,7 +86,60 @@ Home_EmptyIcon = "id=com.filestring.lattedouble:id/empty_icon"
 Home_EmptyText = "id=com.filestring.lattedouble:id/empty_text"
 
 
+"""
+@Author: Linh.nguyen
+@Date Created: Jan 22, 2015
+@Description: All elements in Navigation Bar
+"""
+NavigationBar_Avatar = "id=com.filestring.lattedouble:id/drawer_avatar"
+NavigationBar_Username = "id=com.filestring.lattedouble:id/drawer_name"
+NavigationBar_Email = "id=com.filestring.lattedouble:id/drawer_email"
+NavigationBar_Notification_Bell = "id=com.filestring.lattedouble:id/drawer_notifications"
+NavigationBar_User_Expand = "id=com.filestring.lattedouble:id/drawer_users_expand"
+NavigationBar_All_Files = "id=com.filestring.lattedouble:id/drawer_my_files"
+NavigationBar_New_Received_Files = "id=com.filestring.lattedouble:id/drawer_new_received"
+NavigationBar_New_Received_Files_Number = "id=com.filestring.lattedouble:id/drawer_new_received_num"
+NavigationBar_New_Received_Updates = "id=com.filestring.lattedouble:id/drawer_updated_received"
+NavigationBar_New_Received_Updates_Number = "id=com.filestring.lattedouble:id/drawer_updated_received_num"
+NavigationBar_Update_To_Push = "id=com.filestring.lattedouble:id/drawer_ready_push_update"
+NavigationBar_Update_To_Push_Number = "id=com.filestring.lattedouble:id/drawer_ready_push_update_num"
+NavigationBar_Downloads = "id=com.filestring.lattedouble:id/drawer_download"
+NavigationBar_Downloads_Number = "id=com.filestring.lattedouble:id/drawer_download_num"
+NavigationBar_People = "id=com.filestring.lattedouble:id/drawer_category_people"
+NavigationBar_Settings = "id=com.filestring.lattedouble:id/drawer_settings"
+NavigationBar_Help_Feedback = "id=com.filestring.lattedouble:id/drawer_help"
 
+"""
+@Author: Linh.nguyen
+@Date Created: Jan 22, 2015
+@Description: All elements in User Info Screen
+"""
+UserInfo_TitleID = "id=android:id/action_bar_title"
+UserInfo_TitleText = "User Info"
+UserInfo_Email = "id=com.filestring.lattedouble:id/txtmy_account_email_value"
+UserInfo_First_Name = "id=com.filestring.lattedouble:id/txtmy_account_first_name_value"
+UserInfo_Last_Name = "id=com.filestring.lattedouble:id/txtmy_account_last_name_value"
+UserInfo_Change_Pasword = "id=com.filestring.lattedouble:id/txtmy_account_change_password"
+UserInfo_Sign_Out = "id=com.filestring.lattedouble:id/txtmy_account_log_out"
 
+"""
+@Author: Linh.nguyen
+@Date Created: Jan 22, 2015
+@Description: All elements in Change Password Screen
+"""
+ChangePassword_
+ChangePassword_Current_Password = "id=com.filestring.lattedouble:id/edt_current_pass"
+ChangePassword_New_Password = "id=com.filestring.lattedouble:id/edt_change_pass_1"
+ChangePassword_Confirm_Password = "id=com.filestring.lattedouble:id/edt_change_pass_2"
+ChangePassword_Show_Hide_Password = "id=com.filestring.lattedouble:id/chb_ShowPass"
+ChangePassword_Save_Button = "id=com.filestring.lattedouble:id/txtChange"
+
+"""
+@Author: Linh.nguyen
+@Date Created: Jan 22, 2015
+@Description: All elements in Reset Password Screen
+"""
+ResetPassword_Your_Email = "id=com.filestring.lattedouble:id/edt_email"
+ResetPassword_Send_Button  = "id=com.filestring.lattedouble:id/txt_send"
 
 

@@ -11,7 +11,8 @@ test
 
 test123
     Open Application    http://localhost:4723/wd/hub
-    fsand_Click Back
+    fsand_Close What's New
+    fsand_Click Navigate Sign In To Sign Up Screen
     ${status}    ${value}=    Run Keyword And Ignore Error    fsand_Input Email Address    12345
     ${sta}=    Run Keyword And Return Status    fsand_Input Password    123
     ${v_text}=    AppiumLibrary.Get Element Text    ${SignIn_EmailAddress}

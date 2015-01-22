@@ -7,6 +7,10 @@ Resource          SignInKeywords.txt
 fsand_Open File String Application
     Open Application    http://localhost:4723/wd/hub
 
+fsand_Close What's New
+    ${v_result}=    Run Keyword And Ignore Error    AppiumLibrary.Click Element    ${Home_Back}
+    Run Keyword If    '${v_result[0]}'=='FAIL'    Fail    Can not close What's New
+
 fsand_Change Environment
     [Arguments]    ${v_environment}
     [Documentation]    name=Production|Staging|Development
@@ -23,12 +27,12 @@ fsand_Click Negative Button
 
 fsand_Click Back
     ${v_result}=    Run Keyword And Ignore Error    AppiumLibrary.Click Element    ${Home_Back}
-    Run Keyword If    '${v_result[0]}'=='FAIL'    Fail    message cua anh
+    Run Keyword If    '${v_result[0]}'=='FAIL'    Fail    Can not close What's New
 
 fsand_Click Home
     AppiumLibrary.Click Element    ${Home_Logo}
 
-fsand_Navigate Sign In To Sign Up Screen
+fsand_Click Navigate Sign In To Sign Up Screen
     AppiumLibrary.Click Element    ${SignIn_SignUp}
 
 fsand_Verify Sign In Screen
@@ -39,3 +43,14 @@ fsand_Verify All Files Screen
 
 fsand_Click Close Button
     AppiumLibrary.Click Element    ${Close_ButtonByText}
+
+fsand_Open Navigation Bar From Home Screen
+    AppiumLibrary.Click Element    ${Home_Logo}
+
+fsand_Open User Info Screen
+    fsand_Open Navigation Bar From Home Screen
+    AppiumLibrary.Click Element    ${NavigationBar_Username}
+
+fsand_Open Change Password Screen
+    fsand_Open User Info Screen
+    AppiumLibrary.Click Element    ${UserInfo_Change_Pasword}
