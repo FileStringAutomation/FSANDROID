@@ -1,0 +1,41 @@
+*** Settings ***
+Library           RequestsLibrary
+Library           HttpLibrary.HTTP
+Resource          ../../Variables/Variables.txt
+
+*** Keywords ***
+fscore_Get Access Tooken And User ID
+    [Arguments]    ${v_emailAddress}    ${v_password}
+    Log    Get request body
+    ${v_requestBody}=    Set Variable    {"auth":"credential","pin":{"id":"${v_emailAddress}","key":"${v_password}"},"device":{"id":"PP123456","name":"Web coporation"}}
+    Log    Make a request
+    Create Session    staging    ${v_baseUrlUsingAPI}
+    ${v_response}=    RequestsLibrary.Post Request    Staging    /2.0/user/session    ${v_requestBody}
+    Set Test Variable    ${v_response}
+    Log    Get access token
+    ${v_accessToken}=    Get Json Value    ${v_response.content}    /body/access_token
+    ${v_accessToken}=    Replace String    ${v_accessToken}    "    ${EMPTY}
+    ${v_uid}=    Get Json Value    ${v_response.content}    /body/uid
+    ${v_uid}=    Replace String    ${v_uid}    "    ${EMPTY}
+    Set Test Variable    ${v_accessToken}
+    Set Test Variable    ${v_uid}
+
+fscore_Sign In And Verify Sign In Successful
+    [Arguments]    ${v_emailAddress}    ${v_password}
+    Log    Get request body
+    ${v_requestBody}=    Set Variable    {"auth":"credential","pin":{"id":"${v_emailAddress}","key":"${v_password}"},"device":{"id":"PP123456","name":"Web coporation"}}
+    Log    Make a request
+    ${v_result}=    Run Keyword And Return Status    fscore_Get Access Tooken And User ID    ${v_emailAddress}    ${v_password}
+    ${v_errorMessage}=    Get Json Value    ${v_response.content}    /meta/message
+    Run Keyword If    ${v_result}==False    Fail    Could not sign in at this time! (could not get access_token & uid), the error was: ${v_errorMessage}
+
+fscore_Update User Password
+    [Arguments]    ${v_emailAddress}    ${v_oldPassword}    ${v_newPassword}
+    fscore_Sign In And Verify Sign In Successful    ${v_emailAddress}    ${v_oldPassword}
+    Log    Get request body
+    ${v_requestBody}=    Set Variable    {"pin":{"used_key":"${v_oldPassword}","key":"${v_newPassword}"}}
+    Log    Make a request
+    Create Session    staging    ${v_baseUrlUsingAPI}
+    ${v_result}=    Run Keyword And Ignore Error    RequestsLibrary.Post Request    Staging    /2.0/user/${v_uid}/password?access_token=${v_accessToken}    ${v_requestBody}
+    ${v_errorMessage}=    Get Json Value    ${v_result[1].content}    /meta/message
+    Run Keyword If    '${v_result[0]}'=='FAIL'    Fail    Can't reset password at this time, error message was: "${v_errorMessage}"
