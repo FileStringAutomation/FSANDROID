@@ -1,0 +1,10 @@
+*** Settings ***
+Test Setup        Run Keywords    fs_loadDataFromFileNewVersion    ${v_pathToSignInData}    AND    Open Application    ${v_remoteUrl}    ${v_alias}
+...               AND    fsand_Change Environment    Staging
+Resource          ../../Resources/Android/BusinessKeywordsForAndroid.txt
+Library           AppiumLibrary
+
+*** Test Cases ***
+fs[1001]_Test
+    Input Text    ${SignIn_EmailAddress}    ${v_data[0]}
+    fsand_Verify Sign In Screen

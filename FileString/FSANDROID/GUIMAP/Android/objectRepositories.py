@@ -16,10 +16,7 @@ SignIn_PasswordLogo = "id=com.filestring.lattedouble:id/icon_password"
 SignIn_Password = "id=com.filestring.lattedouble:id/edtSignInPassword"
 SignIn_SignInButton = "id=com.filestring.lattedouble:id/btnSignIn"
 SignIn_ForgotPassword = "id=com.filestring.lattedouble:id/forget_password"
-SignIn_SignUp = "id=com.filestring.lattedouble:id/orSignUp"#Sign Up Now
-
-
-
+SignIn_SignUp = "id=com.filestring.lattedouble:id/orSignUp"
 
 
 
@@ -37,10 +34,8 @@ SignUp_ShowPassword = "id=com.filestring.lattedouble:id/ckbSignUp_ShowPass"
 SignUp_CreateButton = "id=com.filestring.lattedouble:id/txtSignUp_Create"
 SignUp_SignIn = "id=com.filestring.lattedouble:id/back_signin"
 
-# Error message
-#Positive button
+
 OK_Button = "id=com.filestring.lattedouble:id/dlg_btn_positive"
-#Negative button
 Resend_Email_ButtonById = "id=com.filestring.lattedouble:id/dlg_btn_negative"
 Close_ButtonById = "id=com.filestring.lattedouble:id/dlg_btn_positive"
 Resend_Email_ButtonByText = "identifier=Resend Email"
@@ -55,6 +50,7 @@ KeyEvent_Back = 4
 KeyEvent_Menu = 82
 
 
+
 """
 @Author: Linh.nguyen
 @Date Created: Jan 13, 2015
@@ -63,6 +59,7 @@ KeyEvent_Menu = 82
 Verify_SignIn_Form = "Forgot your password?"
 Verify_SignUP_Form= "New Account"
 Verify_AllFiles_Screen = "All Files"
+Verify_UserInfo_Screen = "Sign Out from FileString"
 
 """
 @Author: Minh.nguyen
@@ -109,6 +106,7 @@ NavigationBar_People = "id=com.filestring.lattedouble:id/drawer_category_people"
 NavigationBar_Settings = "id=com.filestring.lattedouble:id/drawer_settings"
 NavigationBar_Help_Feedback = "id=com.filestring.lattedouble:id/drawer_help"
 
+
 """
 @Author: Linh.nguyen
 @Date Created: Jan 22, 2015
@@ -127,12 +125,15 @@ UserInfo_Sign_Out = "id=com.filestring.lattedouble:id/txtmy_account_log_out"
 @Date Created: Jan 22, 2015
 @Description: All elements in Change Password Screen
 """
-ChangePassword_
 ChangePassword_Current_Password = "id=com.filestring.lattedouble:id/edt_current_pass"
 ChangePassword_New_Password = "id=com.filestring.lattedouble:id/edt_change_pass_1"
 ChangePassword_Confirm_Password = "id=com.filestring.lattedouble:id/edt_change_pass_2"
 ChangePassword_Show_Hide_Password = "id=com.filestring.lattedouble:id/chb_ShowPass"
 ChangePassword_Save_Button = "id=com.filestring.lattedouble:id/txtChange"
+
+
+
+
 
 """
 @Author: Linh.nguyen
@@ -141,5 +142,9 @@ ChangePassword_Save_Button = "id=com.filestring.lattedouble:id/txtChange"
 """
 ResetPassword_Your_Email = "id=com.filestring.lattedouble:id/edt_email"
 ResetPassword_Send_Button  = "id=com.filestring.lattedouble:id/txt_send"
+
+
+
+
 
 

@@ -11,7 +11,7 @@ fsand_Sign Up Full
     [Arguments]    ${v_firstName}    ${v_lastName}    ${v_emailAddress}    ${v_password}    ${v_titleAlert}    ${v_messageAlert}
     #    fs_loadDataFromFileNewVersion    ${CURDIR}/Data.xlsx
     Comment    fsand_Click Back    #    Close What's New
-    fsand_Verify Sign In Screen
+    Comment    fsand_Verify Sign In Screen
     #    Change environment
     fsand_Change Environment    Staging
     #    Click Sign Up Now to move to Sign Up form

@@ -2,13 +2,10 @@
 Resource          ../Resources/Android/SignInKeywords.txt
 Library           OperatingSystem
 Library           ImapLibrary
+Resource          ../Variables/Variables.txt
+Variables         ../GUIMAP/Android/objectRepositories.py
 
 *** Test Cases ***
-test
-    @{list}=    Create List    1    2    3    4    5
-    : FOR    ${v_index}    IN    @{list}
-    Log    ${v_index}
-
 test123
     Open Application    http://localhost:4723/wd/hub
     fsand_Close What's New

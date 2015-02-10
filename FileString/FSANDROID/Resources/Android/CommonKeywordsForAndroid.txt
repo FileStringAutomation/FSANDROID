@@ -1,7 +1,6 @@
 *** Settings ***
 Resource          ../../Variables/Variables.txt
-Resource          SignUpKeywords.txt
-Resource          SignInKeywords.txt
+Library           AppiumLibrary
 
 *** Keywords ***
 fsand_Open File String Application
@@ -18,6 +17,7 @@ fsand_Change Environment
     Run Keyword If    '${v_trueOrFalse[0]}'=='FAIL'    Fail    Can't input to Password at Sign
     AppiumLibrary.Click Element    name=${v_environment}
     AppiumLibrary.Click Element    ${OK_Button}
+    Comment    AppiumLibrary.Input Password    ${SignIn_Password}    opensesame
 
 fsand_Click Positive Button
     AppiumLibrary.Click Element    ${OK_Button}
@@ -36,10 +36,10 @@ fsand_Click Navigate Sign In To Sign Up Screen
     AppiumLibrary.Click Element    ${SignIn_SignUp}
 
 fsand_Verify Sign In Screen
-    AppiumLibrary.Wait Until Page Contains    ${Verify_SignIn_Form}    50s
+    AppiumLibrary.Wait Until Page Contains    ${Verify_SignIn_Form}    30s
 
 fsand_Verify All Files Screen
-    AppiumLibrary.Wait Until Page Contains    ${Verify_AllFiles_Screen}    50s
+    AppiumLibrary.Wait Until Page Contains    ${Verify_AllFiles_Screen}    30s
 
 fsand_Click Close Button
     AppiumLibrary.Click Element    ${Close_ButtonByText}
@@ -54,3 +54,14 @@ fsand_Open User Info Screen
 fsand_Open Change Password Screen
     fsand_Open User Info Screen
     AppiumLibrary.Click Element    ${UserInfo_Change_Pasword}
+
+fsand_Change Password On Android
+    [Arguments]    ${v_currentPassword}    ${v_newPassword}
+    fsand_Open Change Password Screen
+    Input Password    ${ChangePassword_Current_Password}    ${v_currentPassword}
+    Input Password    ${ChangePassword_New_Password}    ${v_newPassword}
+    Input Password    ${ChangePassword_Confirm_Password}    ${v_newPassword}
+    Click Element    ${ChangePassword_Save_Button}
+
+fsand_Click Sign Out
+    Click Element    ${UserInfo_Sign_Out}

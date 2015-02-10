@@ -1,18 +1,16 @@
 *** Settings ***
-Resource          BusinessKeywordsForAndroid.txt
+Library           AppiumLibrary
 
 *** Variables ***
 
 *** Keywords ***
 fsand_Sign In Successful
     [Arguments]    ${v_emailAddress}    ${v_password}
-    Comment    fsand_Click Back
-    Comment    fsand_Verify Sign In Screen
     fsand_Input Email Address    ${v_emailAddress}
     fsand_Input Password    ${v_password}
     fsand_Click Sign In Button
     #    verify after sign in
-    fsand_Verify All Files Screen
+    Comment    fsand_Verify All Files Screen
 
 fsand_Sign In Fail Template
     [Arguments]    ${v_emailAddress}    ${v_password}    ${v_titleAlert}    ${v_messageAlert}
