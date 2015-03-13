@@ -1,0 +1,17 @@
+*** Settings ***
+Library           ../../Tool/Custom Library/GetDataFromExcelFile.py
+
+*** Keywords ***
+fsand_Load Data From File
+    [Arguments]    ${v_pathToData}    ${v_sheetName}
+    ${v_data}=    Get Test Data By Sheet Name    ${v_pathToData}    ${v_sheetName}
+    ${v_numberOfItems}=    Evaluate    len(${v_data})
+    ${v_data}=    Run Keyword If    ${v_numberOfItems}==0    Create List    ELSE    Set Variable    ${v_data[0]}
+    Set Suite Variable    ${v_data}
+    Return From Keyword    ${v_data}
+
+fsand_Load Data From File - Data Driven
+    [Arguments]    ${v_pathToData}    ${v_sheetName}
+    ${v_data}=    Get Test Data By Sheet Name    ${v_pathToData}    ${v_sheetName}
+    Set Suite Variable    ${v_data}
+    Return From Keyword    ${v_data}

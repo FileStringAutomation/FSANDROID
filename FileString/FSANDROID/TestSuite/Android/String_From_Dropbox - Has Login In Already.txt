@@ -1,0 +1,22 @@
+*** Settings ***
+Test Setup        Run Keywords    Use TestLink    AND    fsand_Load Data From File    ${v_pathToStringAFileDataFile}    ${v_testcaseID}    AND
+...               Open Application    ${v_remoteUrl}    ${v_alias}    AND    fsand_Change Environment
+Test Teardown     Run Keywords    fsand_Delete All Files (Which Have Been String)    Close All Applications
+Resource          ../../Resources/Android/StringAFile.txt
+
+*** Test Cases ***
+fs[4748]_Dropbox has logn In already
+    fsand_Sign In Successful    ${v_data['Owner username']}    ${v_data['Owner password']}
+    fsand_Click "+" icon
+    fsand_Select String From Dropbox
+    fsand_Dropbox_Search And Select File    ${v_data['Filename']}
+    fsand_Input Recipients    ${v_data['Recipient']}
+    fsand_Click Send Button To String File
+
+fs[4750]_Dropbox has not Sign In yet
+    fsand_Sign In Successful    ${v_data['Owner username']}    ${v_data['Owner password']}
+    fsand_Click "+" icon
+    fsand_Select String From Dropbox
+    fsand_Dropbox_Search And Select File    ${v_data['Filename']}
+    fsand_Input Recipients    ${v_data['Recipient']}
+    fsand_Click Send Button To String File

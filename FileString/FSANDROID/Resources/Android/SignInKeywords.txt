@@ -1,5 +1,7 @@
 *** Settings ***
 Library           AppiumLibrary
+Resource          CommonKeywordsForAndroid.txt
+Resource          SignUpKeywords.txt
 
 *** Variables ***
 
@@ -9,14 +11,11 @@ fsand_Sign In Successful
     fsand_Input Email Address    ${v_emailAddress}
     fsand_Input Password    ${v_password}
     fsand_Click Sign In Button
-    #    verify after sign in
-    Comment    fsand_Verify All Files Screen
+    ${v_status}    Run Keyword And Ignore Error    fsand_Verify All Files Screen
+    Run Keyword If    '${v_status[0]}' == 'FAIL'    fsand_Show Error Status
 
-fsand_Sign In Fail Template
+fsand_Sign In Unsuccessful
     [Arguments]    ${v_emailAddress}    ${v_password}    ${v_titleAlert}    ${v_messageAlert}
-    fsand_Click Back
-    fsand_Verify Sign In Screen
-    fsand_Change Environment    Staging
     fsand_Input Email Address    ${v_emailAddress}
     fsand_Input Password    ${v_password}
     fsand_Click Sign In Button
@@ -36,4 +35,4 @@ fsand_Click Sign In Button
     AppiumLibrary.Click Element    ${SignIn_SignInButton}
 
 fsand_Sign In Button Disable
-    Element Should Be Disabled    ${SignIn_SignInButton}
+    AppiumLibrary.Element Should Be Disabled    ${SignIn_SignInButton}

@@ -1,6 +1,15 @@
 *** Settings ***
 Resource          ../../Variables/Variables.txt
 Library           AppiumLibrary
+Library           Selenium2Library
+Resource          resetpasswordkeywords.txt
+Resource          SignUpKeywords.txt
+Resource          SignInKeywords.txt
+Resource          API.txt
+Resource          StringAFile.txt
+
+*** Variables ***
+${v_environment}    Staging
 
 *** Keywords ***
 fsand_Open File String Application
@@ -11,19 +20,19 @@ fsand_Close What's New
     Run Keyword If    '${v_result[0]}'=='FAIL'    Fail    Can not close What's New
 
 fsand_Change Environment
-    [Arguments]    ${v_environment}
     [Documentation]    name=Production|Staging|Development
-    ${v_trueOrFalse}=    Run Keyword And Ignore Error    AppiumLibrary.Input Password    ${SignIn_Password}    opensesame
-    Run Keyword If    '${v_trueOrFalse[0]}'=='FAIL'    Fail    Can't input to Password at Sign
-    AppiumLibrary.Click Element    name=${v_environment}
-    AppiumLibrary.Click Element    ${OK_Button}
+    Comment    ${v_trueOrFalse}=    Run Keyword And Ignore Error    AppiumLibrary.Input Password    ${SignIn_Password}    opensesame
+    Comment    Run Keyword If    '${v_trueOrFalse[0]}'=='FAIL'    Fail    Can't input to Password at Sign
+    Wait Until Keyword Succeeds    3s    1s    AppiumLibrary.Input Password    ${SignIn_Password}    opensesame
+    Wait Until Keyword Succeeds    3s    1s    AppiumLibrary.Click Element    name=${v_environment}
+    AppiumLibrary.Click Element    ${Popup_OkButton}
     Comment    AppiumLibrary.Input Password    ${SignIn_Password}    opensesame
 
 fsand_Click Positive Button
-    AppiumLibrary.Click Element    ${OK_Button}
+    AppiumLibrary.Click Element    ${Popup_OkButton}
 
 fsand_Click Negative Button
-    AppiumLibrary.Click Element    ${Resend_Email_ButtonById}
+    AppiumLibrary.Click Element    ${SignIn_Popup_ResendEmailId}
 
 fsand_Click Back
     ${v_result}=    Run Keyword And Ignore Error    AppiumLibrary.Click Element    ${Home_Back}
@@ -32,17 +41,17 @@ fsand_Click Back
 fsand_Click Home
     AppiumLibrary.Click Element    ${Home_Logo}
 
-fsand_Click Navigate Sign In To Sign Up Screen
+fsand_Open Sign Up Screen from Sign In Screen
     AppiumLibrary.Click Element    ${SignIn_SignUp}
 
+fsand_Click Close Button
+    AppiumLibrary.Click Element    ${SignIn_Popup_CloseId}
+
 fsand_Verify Sign In Screen
-    AppiumLibrary.Wait Until Page Contains    ${Verify_SignIn_Form}    30s
+    Wait Until Keyword Succeeds    21s    0.5s    AppiumLibrary.Wait Until Page Contains    ${Verify_Screen_SignIn}    20s
 
 fsand_Verify All Files Screen
-    AppiumLibrary.Wait Until Page Contains    ${Verify_AllFiles_Screen}    30s
-
-fsand_Click Close Button
-    AppiumLibrary.Click Element    ${Close_ButtonByText}
+    Wait Until Keyword Succeeds    21s    0.5    AppiumLibrary.Wait Until Page Contains    ${Verify_Screen_AllFiles}    20s
 
 fsand_Open Navigation Bar From Home Screen
     AppiumLibrary.Click Element    ${Home_Logo}
@@ -53,15 +62,87 @@ fsand_Open User Info Screen
 
 fsand_Open Change Password Screen
     fsand_Open User Info Screen
-    AppiumLibrary.Click Element    ${UserInfo_Change_Pasword}
+    AppiumLibrary.Click Element    ${UserInfo_ChangePasword}
 
 fsand_Change Password On Android
     [Arguments]    ${v_currentPassword}    ${v_newPassword}
     fsand_Open Change Password Screen
-    Input Password    ${ChangePassword_Current_Password}    ${v_currentPassword}
-    Input Password    ${ChangePassword_New_Password}    ${v_newPassword}
-    Input Password    ${ChangePassword_Confirm_Password}    ${v_newPassword}
-    Click Element    ${ChangePassword_Save_Button}
+    AppiumLibrary.Input Password    ${ChangePassword_CurrentPassword}    ${v_currentPassword}
+    AppiumLibrary.Input Password    ${ChangePassword_NewPassword}    ${v_newPassword}
+    AppiumLibrary.Input Password    ${ChangePassword_ConfirmPassword}    ${v_newPassword}
+    AppiumLibrary.Click Element    ${ChangePassword_SaveButton}
 
 fsand_Click Sign Out
-    Click Element    ${UserInfo_Sign_Out}
+    AppiumLibrary.Click Element    ${UserInfo_Sign_Out}
+
+fsand_Open Reset Password Screen
+    AppiumLibrary.Click Element    ${SignIn_ForgotPassword}
+
+fsand_Error No Internet
+    AppiumLibrary.Wait Until Page Contains    ${Verify_No_Internet_Access}
+    fsand_Click Positive Button
+
+fsand_Error Service Error
+    AppiumLibrary.Wait Until Page Contains    ${Verify_Service_Error}
+    fsand_Click Positive Button
+
+fsand_Random Email Address
+    [Arguments]    ${v_reEmail}
+    ${randomValue}=    Generate Random String    8
+    ${v_emailAddressRandom}=    Catenate    SEPARATOR=    ${v_reEmail}    +    ${randomValue}    @gmail.com
+    [Return]    ${v_emailAddressRandom}
+
+fsand_Wait Until Text Exist
+    [Arguments]    ${v_textData}
+    Wait Until Keyword Succeeds    21s    0.5s    AppiumLibrary.Wait Until Page Contains    ${v_textData}    20s
+
+fsand_Wait Until Element Exist
+    [Arguments]    ${v_id}
+    Wait Until Keyword Succeeds    11s    0.5s    AppiumLibrary.Wait Until Page Contains    ${v_id}
+
+fsand_Show Error Status
+    Wait Until Keyword Succeeds    6s    5s    fsand_Wait Until Element Exist    ${Popup_Title}
+    ${v_message}=    Get Element Text    ${Popup_Title}
+    Fail    ${v_message}
+
+fs_Delete User Information In Database
+    [Arguments]    ${v_emailAddress}
+    #    Connect to database
+    ${v_isConnectedToDatabase}=    Run Keyword And Ignore Error    DatabaseLibrary.Connect To Database Using Custom Params    adodbapi    'Provider=SQLOLEDB.1;Data Source=${v_databaseSource};Initial Catalog=${v_databaseName};User Id=${v_databaseUsername};Password=${v_databaseUserPassword};'
+    Run Keyword If    '${v_isConnectedToDatabase[0]}'=='FAIL'    Fail    Could not connect to database, the error was: "${v_isConnectedToDatabase[1]}"
+    #    Get current account ID based on its email address
+    ${v_userID}=    DatabaseLibrary.Query    select UserID from [User] where Username='${v_emailAddress.strip()}'
+    ${v_userID}=    Replace String    ${v_userID[0][0]}    {    ${EMPTY}
+    ${v_userID}=    Replace String    ${v_userID}    }    ${EMPTY}
+    #    Delete User In database
+    Run Keyword And Ignore Error    DatabaseLibrary.Execute Sql String    DELETE FROM NotificationDeviceToken WHERE DeviceOwnerID='${v_userID}';DELETE FROM ServicePreference WHERE UserID='${v_userID}';DELETE FROM RegisteredDevice WHERE RegisteredDeviceID='${v_userID}';DELETE FROM WizardUser WHERE UserID='${v_userID}';DELETE FROM UserEmailAddress WHERE UserID='${v_userID}';DELETE FROM [User] WHERE UserID='${v_userID}'
+    #    Verify Account must not exist in database
+    ${v_isAccountExistInDatabase}=    Run Keyword And Return Status    DatabaseLibrary.Check If Exists In Database    select UserID from [User] where Username='${v_emailAddress.strip()}'
+    Run Keyword If    ${v_isAccountExistInDatabase}==True    Fail    Your account: "${v_emailaddress}" still exist in database after delete!!!
+
+fsand_Click On Text
+    [Arguments]    ${v_text}
+    Wait Until Keyword Succeeds    25s    5s    AppiumLibrary.Click Element    ${v_text}
+
+fsand_Verify Text On Screen
+    [Arguments]    ${v_text}
+    Wait Until Keyword Succeeds    40s    1s    AppiumLibrary.Wait Until Page Contains    ${v_text}    20s
+
+fsand_Hide Keyboard_Android Only
+    AppiumLibrary.Press Keycode    KEYCODE_BACK
+
+fsand_Disconnect Network
+    AppiumLibrary.Set Network Connection Status    0
+
+fsand_Enable Network
+    AppiumLibrary.Set Network Connection Status    6
+
+fsand_Click Menu On Top Left
+    Wait Until Keyword Succeeds    3s    1s    AppiumLibrary.Page Should Contain Element    ${Home_Back}
+    AppiumLibrary.Click Element    ${Home_Back}
+
+fsand_Wait Until Element Exist Timeout
+    [Arguments]    ${v_elementLocator}    ${v_timeOut}    ${v_errorMessage}=None
+    ${v_isElementExist}=    Run Keyword And Return Status    Wait Until Keyword Succeeds    ${v_timeOut}    1    AppiumLibrary.Page Should Contain Element    ${v_elementLocator}
+    Run Keyword If    ${v_isElementExist}==False and "${v_errorMessage}"!="None"    Fail    ${v_errorMessage}
+    Run Keyword If    ${v_isElementExist}==False and "${v_errorMessage}"=="None"    Fail    Element "${v_elementLocator}" not found

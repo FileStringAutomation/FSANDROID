@@ -1,0 +1,42 @@
+*** Settings ***
+Test Setup        Run Keywords    Use TestLink    AND    fsand_Load Data From File    ${v_pathToStringAFileDataFile}    ${v_testcaseID}    AND
+...               Open Application    ${v_remoteUrl}    ${v_alias}    AND    fsand_Change Environment
+Test Teardown     Close All Applications
+Library           OperatingSystem
+Resource          ../../Resources/Android/StringAFile.txt
+
+*** Test Cases ***
+fs[4826]_File not support
+    fsand_Sign In Successful    ${v_data['Owner username']}    ${v_data['Owner password']}
+    fsand_String A File    ${v_pathToUnsupportedFileType}    ${v_data['Filename']}    automation_UnsupportedFile
+    fsand_File Should Unsuccessfully String    ${v_data['Sikuli Image File Name']}    Incorrect error message!
+
+fs[4830]_File size > 50 MB
+    fsand_Sign In Successful    ${v_data['Owner username']}    ${v_data['Owner password']}
+    fsand_String A File    ${v_pathToUnsupportedFileType}    ${v_data['Filename']}    automation_UnsupportedFile
+    fsand_File Should Unsuccessfully String    ${v_data['Sikuli Image File Name']}    Incorrect error message!
+
+fs[4834]_Invalid email
+    fsand_Sign In Successful    ${v_data['Owner username']}    ${v_data['Owner password']}
+    fsand_String A File    ${v_pathToSupportedFileType}    ${v_data['Filename']}    automation_UnsupportedFile
+    fsand_Input Recipients    ${v_data['Recipient username']}
+    fsand_File Should Unsuccessfully String    ${v_data['Sikuli Image File Name']}    Incorrect error message!
+
+fs[4836]_Email is yours
+    fsand_Sign In Successful    ${v_data['Owner username']}    ${v_data['Owner password']}
+    fsand_String A File    ${v_pathToSupportedFileType}    ${v_data['Filename']}    automation_UnsupportedFile
+    fsand_Input Recipients    ${v_data['Owner username']}
+    fsand_File Should Unsuccessfully String    ${v_data['Sikuli Image File Name']}    Incorrect error message!
+
+fs[4838]_Email is secondary email of yours
+    fsand_Sign In Successful    ${v_data['Owner username']}    ${v_data['Owner password']}
+    fsand_String A File    ${v_pathToSupportedFileType}    ${v_data['Filename']}    automation_UnsupportedFile
+    fsand_Input Recipients    ${v_data['Secondary email address']}
+    fsand_File Should Unsuccessfully String    ${v_data['Sikuli Image File Name']}    Incorrect error message!
+
+fs[4840]_without network
+    fsand_Sign In Successful    ${v_data['Owner username']}    ${v_data['Owner password']}
+    fsand_Disconnect Network
+    fsand_Click "+" icon
+    AppiumLibrary.Wait Until Page Contains    ${Verify_Popup_NoInternetAccessTitle}    20
+    [Teardown]    Run Keywords    fsand_Enable Network    Close All Applications

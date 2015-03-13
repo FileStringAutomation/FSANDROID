@@ -1,0 +1,12 @@
+*** Settings ***
+Test Setup        Run Keywords    Use TestLink    AND    Open Application    ${v_remoteUrl}    ${v_alias}
+Test Teardown     Close All Applications
+Resource          ../../Resources/Android/SignInKeywords.txt
+Resource          ../../Resources/Android/StringAFile.txt
+
+*** Test Cases ***
+fs[4735]_From Menu ( Plus "+" on top corner right)
+    fsand_Load Data From File    ${v_pathToStringAFileDataFile}    ${v_testcaseID}
+    fsand_Change Environment
+    fsand_Sign In Successful    ${v_data['Owner username']}    ${v_data['Owner password']}
+    fsand_Click "+" icon

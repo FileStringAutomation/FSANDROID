@@ -88,3 +88,18 @@ fs_loadDataInFirstSheet
     \    Append To List    ${v_data}    ${v_value}
     Set Suite Variable    ${v_dataInFirstSheet}    ${v_data}
     [Return]    ${v_data}
+
+fswin_Delete User Information In Database
+    [Arguments]    ${v_emailAddress}
+    #    Connect to database
+    ${v_isConnectedToDatabase}=    Run Keyword And Ignore Error    DatabaseLibrary.Connect To Database Using Custom Params    adodbapi    'Provider=SQLOLEDB.1;Data Source=${v_databaseSource};Initial Catalog=${v_databaseName};User Id=${v_databaseUsername};Password=${v_databaseUserPassword};'
+    Run Keyword If    '${v_isConnectedToDatabase[0]}'=='FAIL'    Fail    Could not connect to database, the error was: "${v_isConnectedToDatabase[1]}"
+    #    Get current account ID based on its email address
+    ${v_userID}=    DatabaseLibrary.Query    select UserID from [User] where Username='${v_emailAddress.strip()}'
+    ${v_userID}=    Replace String    ${v_userID[0][0]}    {    ${EMPTY}
+    ${v_userID}=    Replace String    ${v_userID}    }    ${EMPTY}
+    #    Delete User In database
+    Run Keyword And Ignore Error    DatabaseLibrary.Execute Sql String    DELETE FROM NotificationDeviceToken WHERE DeviceOwnerID='${v_userID}';DELETE FROM ServicePreference WHERE UserID='${v_userID}';DELETE FROM RegisteredDevice WHERE RegisteredDeviceID='${v_userID}';DELETE FROM WizardUser WHERE UserID='${v_userID}';DELETE FROM UserEmailAddress WHERE UserID='${v_userID}';DELETE FROM [User] WHERE UserID='${v_userID}'
+    #    Verify Account must not exist in database
+    ${v_isAccountExistInDatabase}=    Run Keyword And Return Status    DatabaseLibrary.Check If Exists In Database    select UserID from [User] where Username='${v_emailAddress.strip()}'
+    Run Keyword If    ${v_isAccountExistInDatabase}==True    Fail    Your account: "${v_emailaddress}" still exist in database after delete!!!

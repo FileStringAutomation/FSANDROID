@@ -1,0 +1,42 @@
+*** Test Cases ***
+fs[3001]_Owner revoke Recipient not affect Downstream
+
+fs[3002]_Owner revoke Recipient affect Downstream
+
+fs[3003]_Owner revoke multi \ Recipient not affect Downstream
+
+fs[3004]_Owner revoke multi \ Recipient affect Downstream
+
+fs[3005]_Owner revoke all \ Recipient not affect Downstream
+
+fs[3006]_Owner revoke all \ Recipient \ affect Downstream
+
+fs[3007]_Owner revoke Recipient who viewing file
+
+fs[3008]_Owner revoke Recipient who viewing File Info
+
+fs[3009]_Owner revoke Recipient who viewing File Detail
+
+fs[3010]_Owner revoke Recipient who viewing Tracking Report
+
+fs[3011]_Owner revoke Recipient who changing rights
+
+fs[3012]_Owner revoke Recipient who adding Downstream
+
+fs[3013]_Owner revoke Recipient when Downstream is viewing file
+
+fs[3014]_Owner revoke Recipient when Downstream is viewing File Info
+
+fs[3015]_Owner revoke Recipient when Downstream is viewing File Detail
+
+fs[3016]_Owner revoke Downstream
+
+fs[3017]_Owner revoke all Recipient by Long press on file then select Revoke
+
+fs[3018]_Direct-Recipient revoke Downstream
+
+fs[3019]_Direct-Recipient revoke Downstream who is viewing file
+
+fs[3020]_Direct-Recipient revoke Downstream who is viewing File Info
+
+fs[3021]_Direct-Recipient revoke Downstream who is viewing File Detail

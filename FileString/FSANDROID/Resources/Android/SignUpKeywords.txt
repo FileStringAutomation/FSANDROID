@@ -3,19 +3,17 @@ Resource          BusinessKeywordsForAndroid.txt
 Library           DatabaseLibrary
 Library           robotmail
 Library           Selenium2Library
+Resource          SignInKeywords.txt
 
 *** Variables ***
 
 *** Keywords ***
-fsand_Sign Up Full
-    [Arguments]    ${v_firstName}    ${v_lastName}    ${v_emailAddress}    ${v_password}    ${v_titleAlert}    ${v_messageAlert}
-    #    fs_loadDataFromFileNewVersion    ${CURDIR}/Data.xlsx
-    Comment    fsand_Click Back    #    Close What's New
-    Comment    fsand_Verify Sign In Screen
-    #    Change environment
-    fsand_Change Environment    Staging
+fsand_Sign Up Successful
+    [Arguments]    ${v_firstName}    ${v_lastName}    ${v_emailAddress}    ${v_passwordFS}    ${v_titleAlert}    ${v_messageAlert}
+    ...    ${v_passwordGmail}
+    fsand_Mark All Emails As Read After Sign Up    ${v_emailAddress}    ${v_passwordGmail}
     #    Click Sign Up Now to move to Sign Up form
-    fsand_Click Navigate Sign In To Sign Up Screen
+    fsand_Open Sign Up Screen from Sign In Screen
     #    Input First Name
     fsand_Input First Name    ${v_firstName}
     #    Input Last Name
@@ -23,7 +21,7 @@ fsand_Sign Up Full
     #    input email address
     fsand_Input Email Address_Sign Up    ${v_emailAddress}
     #    input password
-    fsand_Input Password_Sign Up    ${v_password}
+    fsand_Input Password_Sign Up    ${v_passwordFS}
     #    Click Sign Up Button
     fsand_Click Sign Up Button
     #    Verify Title "Verify Email after Sign UP"
@@ -32,16 +30,48 @@ fsand_Sign Up Full
     fsand_Verify Message Alert    ${v_messageAlert}
     #    Click OK button
     fsand_Click Positive Button
+    Comment    fsand_Sign Up Successful with alias    ${v_data[0]}    ${v_data[1]}    ${v_emailAddressRandom}    ${v_data[3]}    ${v_data[4]}
+    ...    ${v_data[5]}
+    fsand_verify Email When Register An Account    ${v_firstName}    ${v_emailAddress}    ${v_passwordGmail}
+    fsand_goto Link on Email to Verify Email Address    ${v_allLinks[1]}
+    #    if service error ==> click ok then click again
+    fsand_Sign In Successful    ${v_emailAddress}    ${v_passwordFS}
 
-fsand_Sign Up Just Fill All Value
-    [Arguments]    ${v_firstName}    ${v_lastName}    ${v_emailAddress}    ${v_password}
-    #    fs_loadDataFromFileNewVersion    ${CURDIR}/Data.xlsx
-    fsand_Click Back    #    Close What's New
-    fsand_Verify Sign In Screen
-    #    Change environment
-    fsand_Change Environment    Staging
+fsand_Sign Up Successful with alias
+    [Arguments]    ${v_firstName}    ${v_lastName}    ${v_emailAddress}    ${v_passwordFS}    ${v_titleAlert}    ${v_messageAlert}
+    ...    ${v_passwordGmail}
+    Comment    fsand_Click Back    #    Close What's New
+    Comment    fsand_Verify Sign In Screen
+    fsand_Mark All Emails As Read After Sign Up    ${v_emailAddress}    ${v_passwordGmail}
+    ${v_emailAddressRandom}=    fsand_Random Email Address    ${v_firstName}
     #    Click Sign Up Now to move to Sign Up form
-    fsand_Click Navigate Sign In To Sign Up Screen
+    fsand_Open Sign Up Screen from Sign In Screen
+    #    Input First Name
+    fsand_Input First Name    ${v_firstName}
+    #    Input Last Name
+    fsand_Input Last Name    ${v_lastName}
+    #    input email address
+    fsand_Input Email Address_Sign Up    ${v_emailAddressRandom}
+    #    input password
+    fsand_Input Password_Sign Up    ${v_passwordFS}
+    #    Click Sign Up Button
+    fsand_Click Sign Up Button
+    #    Verify Title "Verify Email after Sign UP"
+    fsand_Verify Title Alert    ${v_titleAlert}
+    #    Verify Mesage "Verify Email after Sign UP "
+    fsand_Verify Message Alert    ${v_messageAlert}
+    #    Click OK button
+    fsand_Click Positive Button
+    Comment    fsand_Sign Up Successful with alias    ${v_data[0]}    ${v_data[1]}    ${v_emailAddressRandom}    ${v_data[3]}    ${v_data[4]}
+    ...    ${v_data[5]}
+    fsand_verify Email When Register An Account    ${v_firstName}    ${v_emailAddress}    ${v_passwordGmail}
+    fsand_goto Link on Email to Verify Email Address    ${v_allLinks[1]}
+    #    if service error ==> click ok then click again
+    fsand_Sign In Successful    ${v_emailAddressRandom}    ${v_passwordFS}
+
+fsand_Sign Up Fill All Value
+    [Arguments]    ${v_firstName}    ${v_lastName}    ${v_emailAddress}    ${v_password}
+    fsand_Open Sign Up Screen from Sign In Screen
     #    Input First Name
     fsand_Input First Name    ${v_firstName}
     #    Input Last Name
@@ -50,6 +80,14 @@ fsand_Sign Up Just Fill All Value
     fsand_Input Email Address_Sign Up    ${v_emailAddress}
     #    input password
     fsand_Input Password_Sign Up    ${v_password}
+
+fsand_Sign Up Unsuccessful
+    [Arguments]    ${v_firstName}    ${v_lastName}    ${v_emailAddress}    ${v_passwordFS}    ${v_titleAlert}    ${v_messageAlert}
+    fsand_Sign Up Fill All Value    ${v_firstName}    ${v_lastName}    ${v_emailAddress}    ${v_passwordFS}
+    fsand_Click Sign Up Button
+    fsand_Verify Title Alert    ${v_titleAlert}
+    fsand_Verify Message Alert    ${v_messageAlert}
+    fsand_Click Close Button
 
 fsand_Input Email Address_Sign Up
     [Arguments]    ${v_EmailAdress}
@@ -71,15 +109,15 @@ fsand_Click Sign Up Button
     AppiumLibrary.Click Element    ${SignUp_CreateButton}
 
 fsand_Sign Up Button Disable
-    Element Should Be Disabled    ${SignUp_CreateButton}
+    AppiumLibrary.Element Should Be Disabled    ${SignUp_CreateButton}
 
 fsand_Verify Title Alert
     [Arguments]    ${v_titleAlert}
-    AppiumLibrary.Wait Until Page Contains    ${v_titleAlert}    50s
+    Wait Until Keyword Succeeds    40s    2s    AppiumLibrary.Wait Until Page Contains    ${v_titleAlert}    20s
 
 fsand_Verify Message Alert
     [Arguments]    ${v_messageAlert}
-    AppiumLibrary.Wait Until Page Contains    ${v_messageAlert}    50s
+    Wait Until Keyword Succeeds    40s    2s    AppiumLibrary.Wait Until Page Contains    ${v_messageAlert}    20s
 
 fsand_Delete User Information In Database
     [Arguments]    ${v_emailAddress}
@@ -130,7 +168,3 @@ fsand_Mark All Emails As Read After Sign Up
     Comment    robotmail.Mark Email As Read
     robotmail.Delete All Emails
     robotmail.Close Mailbox
-
-fsand_Sign Up Successful
-
-fsand_Template_Cannot Sign Up
