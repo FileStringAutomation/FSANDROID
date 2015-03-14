@@ -1,5 +1,5 @@
 *** Settings ***
-Library           TestlinkAPIClient    ${tl_APIKey}    ${tl_testPlanID}    ${tl_buildDescription}
+Library           ../Tool/Testlink Library/TestlinkAPIClient.py    ${tl_APIKey}    ${tl_testPlanID}    ${tl_buildDescription}
 
 *** Variables ***
 ${tl_APIKey}      6548fe711c80a512412c88a44817a7f9

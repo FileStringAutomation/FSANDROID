@@ -15,14 +15,15 @@ fs[1002]_Can sign in with Email has "space" in first and end
 
 fs[1003]_Can sign in After reset password with new password
     fsand_Sign In Successful    ${v_data[0]}    ${v_data[1]}
-    Comment     Verify All Files Screen
+    Comment    Verify All Files Screen
     Comment    fsand_Verify All Files Screen
     ${v_result}=    Run Keyword And Ignore Error    fsand_Verify All Files Screen
     Run Keyword If    '${v_result[0]}'=='PASS'    Fail    What the fuck
     Sleep    10s
     fsand_Change Password On Android    ${v_data[1]}    ${v_data[2]}
-    ${v_result}=    Run Keyword And Ignore Error    AppiumLibrary.Wait Until Page Contains    ${Verify_UserInfo_Screen}
-    Run Keyword If    '${v_result[0]}'=='PASS'    Fail    What the fuck
+    Comment    ${v_result}=    Run Keyword And Ignore Error    AppiumLibrary.Wait Until Page Contains    ${Verify_UserInfo_Screen}
+    Comment    Run Keyword If    '${v_result[0]}'=='PASS'    Fail    What the fuck
+    Sleep    10s
     fsand_Click Sign Out
     ${v_result}=    Run Keyword And Ignore Error    fsand_Verify Sign In Screen
     Run Keyword If    '${v_result[0]}'=='PASS'    Fail    What the fuck

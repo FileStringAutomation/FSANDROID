@@ -3,6 +3,9 @@ Library           RequestsLibrary
 Library           HttpLibrary.HTTP
 Resource          ../../Variables/Variables.txt
 
+*** Variables ***
+${v_baseUrlUsingAPI}     https://fscs1.cloudapp.net:89
+
 *** Keywords ***
 fscore_Get Access Tooken And User ID
     [Arguments]    ${v_emailAddress}    ${v_password}
