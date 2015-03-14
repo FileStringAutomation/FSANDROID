@@ -4,6 +4,9 @@ Resource          ../Resources/TestlinkResources.txt
 Resource          ../Resources/CommonKeywordsForAllPlatforms.txt
 Library           RequestsLibrary
 Library           HttpLibrary.HTTP
+Resource          ../Resources/Android/LoadDataFromFile.txt
+Library           OperatingSystem
+Library           Remote    ${v_ipaddressUsingSikuli}:8271    WITH NAME    SikuliLibrary
 
 *** Variables ***
 ${v_remoteUrl}    http://localhost:4723/wd/hub
@@ -14,3 +17,9 @@ ${v_databaseUsername}    storycloud@yxgx5mqv7u
 ${v_databaseUserPassword}    NasdfsdfVDADasd3325673
 ${v_pathToSignInData}    ${CURDIR}/../DataSet/DataSignIn.xlsx
 ${v_pathToSignUpData}    ${CURDIR}/../DataSet/DataSignUp.xlsx
+${v_pathToResetPasswordData}    ${CURDIR}/../DataSet/DataResetPassword.xlsx
+${v_sikuliRPEmailNotSignUp}    ${CURDIR}/../DataSikuli/ResetPasswordWithEmailHadNotSignUpYet1.png
+${v_pathToSikuliImages}    ${CURDIR}/../DataSet/Sikuli Images/${v_deviceName}
+${v_deviceName}    PhoneMotorola    # It depends on the Folder contains sikuli Images
+${v_sikuliResetPasswordUnableToVerify}    ${CURDIR}/../DataSikuli/ResetPasswordUnableToVerifyEmail.png
+${v_ipaddressUsingSikuli}    192.168.1.79

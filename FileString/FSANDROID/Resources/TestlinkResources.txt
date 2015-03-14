@@ -35,7 +35,7 @@ Use Existing Build
     Set Global Variable    ${v_buildID}
 
 Use TestLink
-    Run Keyword If    '${tl_isReportToTestlink}'=='TRUE'    Evaluate TestCase ID
+    Evaluate TestCase ID
 
 Report Test Status
     Run Keyword If    '${tl_isReportToTestlink}'=='TRUE'    TestCase Result

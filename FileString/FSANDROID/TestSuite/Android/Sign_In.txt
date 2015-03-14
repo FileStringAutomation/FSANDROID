@@ -1,19 +1,22 @@
 *** Settings ***
-Test Setup        Run Keywords    fs_loadDataFromFileNewVersion    ${v_pathToSignInData}    AND    Open Application    ${v_remoteUrl}    ${v_alias}
-...               AND    fsand_Change Environment    Staging
+Test Setup        Run Keywords    Use TestLink    AND    fsand_Load Data From File    ${v_pathToSignInData}    ${v_testcaseID}    AND
+...               Open Application    ${v_remoteUrl}    ${v_alias}    AND    fsand_Change Environment
+Test Teardown     AppiumLibrary.Close Application
 Resource          ../../Resources/Android/SignInKeywords.txt
 Library           AppiumLibrary
 Resource          ../../Resources/Android/BusinessKeywordsForAndroid.txt
 Resource          ../../Resources/Android/API.txt
+Library           Selenium2Library
 
 *** Test Cases ***
-fs[1001]_Can sign in with Email has signed up and verified already
-    fsand_Sign In Successful    ${v_data[0]}    ${v_data[1]}
+fs[1000]_Can sign in with Email has signed up and verified already
+    fsand_Sign In Successful    ${v_data['Email Address']}    ${v_data['Password']}
 
 fs[1002]_Can sign in with Email has "space" in first and end
-    fsand_Sign In Successful    ${v_data[0]}    ${v_data[1]}
+    fsand_Sign In Successful    ${v_data['Email Address']}    ${v_data['Password']}
 
 fs[1003]_Can sign in After reset password with new password
+<<<<<<< HEAD
     fsand_Sign In Successful    ${v_data[0]}    ${v_data[1]}
     Comment    Verify All Files Screen
     Comment    fsand_Verify All Files Screen
@@ -30,41 +33,76 @@ fs[1003]_Can sign in After reset password with new password
     fsand_Sign In Successful    ${v_data[0]}    ${v_data[2]}
     Comment    Verify All Files Screen
     fscore_Update User Password    ${v_data[0]}    ${v_data[2]}    ${v_data[1]}
+=======
+    fsand_Open Reset Password Screen
+    Comment    Input Email
+    AppiumLibrary.Input Text    ${ResetPassword_EmailAddress}    ${v_data['Email Address']}
+    Comment    Click Send Button
+    fsand_Click Reset Password Send Button
+    fsand_Wait Until Text Exist    An email with instructions to create a new password has been sent to
+    fsand_Click Positive Button
+    Open Browser    http://www.yopmail.com/en/    gc
+    Maximize Browser Window
+    Selenium2Library.Input Text    //*[@id="login"]    ${v_data['Email Address']}
+    Comment    fscore_Update User Password    ${v_data[0]}    ${v_data[1]}    ${v_data[0]}
+    Selenium2Library.Click Button    //*[@value="Check Inbox"]
+    Wait Until Page Contains Element    //iframe[@id="ifmail"]    10
+    Select Frame    //iframe[@id="ifmail"]
+    Selenium2Library.Wait Until Page Contains    Reset Password    10s
+    Comment    Selenium2Library.Click Element    //*[@href="http://fswebstaging.cloudapp.net/api/user/password?ckey=symcluqokginlum&uid=e30cb457-5175-3069-826a-ec451a68e77d"]
+    Selenium2Library.Click Element    //*[@id="mailmillieu"]/div[2]/table/tbody/tr/td/table/tbody/tr[2]/td/p[3]/a
+    Sleep    2s
+    Select Window    title=FileString
+    Selenium2Library.Input Text    //input[@placeholder="Password"]    ${v_data['New Password']}
+    Selenium2Library.Input Text    //input[@placeholder="Confirm Password"]    ${v_data['New Password']}
+    Selenium2Library.Click Element    //div[@class="form-group no-border"]/button
+    Selenium2Library.Close Browser
+    fsand_Sign In Successful    ${v_data['Email Address']}    ${v_data['New Password']}
+    [Teardown]    Run Keywords    Close Application    AND    Close Browser    AND    fscore_Update User Password
+    ...    ${v_data['Email Address']}    ${v_data['New Password']}    ${v_data['Password']}
+>>>>>>> ce7a2bd0339463df41c806100fab42314fabd3d8
 
 fs[1004]_Can sign in After change password with new password
+    fsand_Sign In Successful    ${v_data['Email Address']}    ${v_data['Password']}
+    fsand_Change Password On Android    ${v_data['Password']}    ${v_data['New Password']}
+    Wait Until Keyword Succeeds    6s    3s    fsand_Click Sign Out
+    fsand_Verify Sign In Screen
+    fsand_Sign In Successful    ${v_data['Email Address']}    ${v_data['New Password']}
+    Comment    Verify All Files Screen
+    [Teardown]    fscore_Update User Password    ${v_data['Email Address']}    ${v_data['New Password']}    ${v_data['Password']}
 
 fs[1005]_Can sign in After change primary email on web with new Email
+    [Documentation]    Cross platform
+    Comment    Selenium2Library.Open Browser    http://fswebstaging.cloudapp.net/    ff
+    Comment    Selenium2Library.Maximize Browser Window
+    Comment    Selenium2Library.Input Text    //input[@placeholder="Email Address"]    ${v_data['Email Address']}
+    Comment    Selenium2Library.Input Password    //input[@placeholder="Password"]    ${v_data['Password']}
+    Comment    Selenium2Library.Click Button    Sign In
 
 fs[1006]_Can Sign in with secondary email
-    fsand_Sign In Successful    ${v_data[0]}    ${v_data[1]}
+    fsand_Sign In Successful    ${v_data['Email Address']}    ${v_data['Password']}
 
 fs[1007]_Can not Sign in with Email has not sign up yet
-    fsand_Sign In Fail Template    ${v_data[0]}    ${v_data[1]}    ${v_data[2]}    ${v_data[3]}
+    fsand_Sign In Unsuccessful    ${v_data['Email Address']}    ${v_data['Password']}    ${v_data['Title Alert']}    ${v_data['Message Alert']}
 
 fs[1008]_Can not Sign in with Invalid email
-    fsand_Sign In Fail Template    ${v_data[0]}    ${v_data[1]}    ${v_data[2]}    ${v_data[3]}
+    fsand_Sign In Unsuccessful    ${v_data['Email Address']}    ${v_data['Password']}    ${v_data['Title Alert']}    ${v_data['Message Alert']}
 
 fs[1009]_Can not Sign in with Wrong password
-    fsand_Sign In Fail Template    ${v_data[0]}    ${v_data[1]}    ${v_data[2]}    ${v_data[3]}
+    fsand_Sign In Unsuccessful    ${v_data['Email Address']}    ${v_data['Password']}    ${v_data['Title Alert']}    ${v_data['Message Alert']}
 
 fs[1010]_Can not sign in with unverified secondary email
-    fsand_Sign In Fail Template    ${v_data[0]}    ${v_data[1]}    ${v_data[2]}    ${v_data[3]}
+    fsand_Sign In Unsuccessful    ${v_data['Email Address']}    ${v_data['Password']}    ${v_data['Title Alert']}    ${v_data['Message Alert']}
 
 fs[1011]_Can not Sign in with Empty any value - Email or Password
-    fsand_Click Back
-    fsand_Verify Sign In Screen
-    fsand_Input Email Address    ${v_data[0]}
+    fsand_Input Email Address    ${v_data['Email Address']}
     fsand_Sign In Button Disable
     Clear Text    ${SignIn_EmailAddress}
-    fsand_Input Password    ${v_data[1]}
+    fsand_Input Password    ${v_data['Password']}
     fsand_Sign In Button Disable
 
 fs[1012]_Can not Sign in with Email has signed up but un-verify
-    fsand_Sign In Fail Template    ${v_data[0]}    ${v_data[1]}    ${v_data[2]}    ${v_data[3]}
+    fsand_Sign In Unsuccessful    ${v_data['Email Address']}    ${v_data['Password']}    ${v_data['Title Alert']}    ${v_data['Message Alert']}
 
 fs[1013]_Can Sign in with Email is secondary email already
-    fsand_Sign In Successful    ${v_data[0]}    ${v_data[1]}
-
-fs[1014]_Can not Sign in with Without network
-    #    turn off password
-    fsand_Sign In Fail Template    ${v_data[0]}    ${v_data[1]}    ${v_data[2]}    ${v_data[3]}
+    fsand_Sign In Successful    ${v_data['Email Address']}    ${v_data['Password']}

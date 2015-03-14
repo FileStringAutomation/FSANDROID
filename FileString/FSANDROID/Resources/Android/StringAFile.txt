@@ -4,3 +4,196 @@ Resource          SignInKeywords.txt
 
 *** Variables ***
 ${v_pathToStringAFileDataFile}    ${CURDIR}/../../DataSet/ShareNewFile.xlsx
+${v_pathToSupportedFileType}    ${CURDIR}/../../DataSet/FileTypeSupported
+${v_pathToUnsupportedFileType}    ${CURDIR}/../../DataSet/FileTypeUnsupported
+
+*** Keywords ***
+fsand_Click "+" icon
+    ${v_result}    Run Keyword And Ignore Error    AppiumLibrary.Click Element    ${Home_Add}
+    Run Keyword If    '${v_result[0]}'=='FAIL'    Fail    Can't string new file by clicking on "+" button
+
+fsand_Push File To A Folder Inside SDCARD Folder
+    [Arguments]    ${v_pathToFile}    ${v_folderName}
+    ${v_result}=    Run And Return Rc And Output    adb push "${v_pathToFile}" /sdcard/${v_folderName}
+    Run Keyword If    ${v_result[0]}==1    Fail    Can't push file to folder "${v_folderName}". The error was: "${v_result[1]}"
+
+fsand_Create A Folder Inside SDCARD Folder
+    [Arguments]    ${v_folderName}
+    Run    adb shell "mkdir /sdcard/${v_folderName}"
+
+fsand_String A File
+    [Arguments]    ${v_pathToFileOnDesktopNoIncludedFileName}    ${v_FileName}    ${v_folderToPutFileOnAndroid}
+    Comment    Push file to android device
+    fsand_Create A Folder Inside SDCARD Folder    ${v_folderToPutFileOnAndroid}
+    fsand_Push File To A Folder Inside SDCARD Folder    ${v_pathToFileOnDesktopNoIncludedFileName}/${v_FileName}    ${v_folderToPutFileOnAndroid}
+    Comment    Select File
+    fsand_Click "+" icon
+    fsand_Select String A File Option
+    fsand_Select An Option in String A File From popup    File Manager
+    fsand_File Manager_Search And Open A File Or Folder    ${v_folderToPutFileOnAndroid}
+    fsand_File Manager_Search And Open A File Or Folder    ${v_FileName}
+
+fsand_Select String A File Option
+    AppiumLibrary.Wait Until Page Contains    String a File    10s
+    AppiumLibrary.Click Element    ${Home_Add_StringAFile}
+
+fsand_Select String From Google Drive Option
+    AppiumLibrary.Wait Until Page Contains    String from Google Drive    10s
+    AppiumLibrary.Click Element    ${Home_Add_GoogleDrive}
+
+fsand_Select String From Dropbox
+    AppiumLibrary.Wait Until Page Contains    String from Dropbox    10s
+    AppiumLibrary.Click Element    ${Home_Add_Dropbox}
+
+fsand_Select An Option in String A File From popup
+    [Arguments]    ${v_yourOptionText}
+    AppiumLibrary.Wait Until Page Contains    String a file from    10s
+    AppiumLibrary.Click Element    //android.widget.TextView[@text="${v_yourOptionText}"]
+
+fsand_File Manager_Search And Open A File Or Folder
+    [Arguments]    ${v_folderNameOrFileName}
+    ${MAX_SCREEN}=    Set Variable    30
+    sleep    5s
+    ${v_numberOfItems}=    fsand_Count Number Of Matching Items    //android.widget.ListView[@resource-id="com.rhmsoft.fm:id/entryList"]/android.widget.RelativeLayout
+    ${v_numberOfItems}=    Evaluate    ${v_numberOfItems}-1
+    ${v_previousLastFileName}=    Set Variable    ${EMPTY}
+    ${v_currentLastFileName}=    Set Variable    ${EMPTY}
+    : FOR    ${v_index}    IN RANGE    0    ${MAX_SCREEN}
+    \    ${v_result}=    Run Keyword And Return Status    AppiumLibrary.Click Element    //android.widget.ListView[@resource-id="com.rhmsoft.fm:id/entryList"]/android.widget.RelativeLayout/android.widget.RelativeLayout/android.widget.TextView[@resource-id="com.rhmsoft.fm:id/name" and @text="${v_folderNameOrFileName}"]
+    \    Run Keyword If    ${v_result}==True    Run Keywords    Return From Keyword    ${True}    AND
+    \    ...    Exit For Loop
+    \    ${v_previousLastFileName}=    AppiumLibrary.Get Element Text    //android.widget.ListView[@resource-id="com.rhmsoft.fm:id/entryList"]/android.widget.RelativeLayout[@index="${v_numberOfItems}"]/android.widget.RelativeLayout/android.widget.TextView[@resource-id="com.rhmsoft.fm:id/name"]
+    \    Scroll Slow    //android.widget.ListView[@resource-id="com.rhmsoft.fm:id/entryList"]/android.widget.RelativeLayout[@index="${v_numberOfItems}"]    //android.widget.ListView[@resource-id="com.rhmsoft.fm:id/entryList"]/android.widget.RelativeLayout[@index="0"]
+    \    Sleep    3s
+    \    ${v_currentLastFileName}    AppiumLibrary.Get Element Text    //android.widget.ListView[@resource-id="com.rhmsoft.fm:id/entryList"]/android.widget.RelativeLayout[@index="${v_numberOfItems}"]/android.widget.RelativeLayout/android.widget.TextView[@resource-id="com.rhmsoft.fm:id/name"]
+    \    Run Keyword If    '${v_previousLastFileName}'=='${v_currentLastFileName}'    Run Keyword    Fail    Your file or folder "${v_folderNameOrFileName}" doesn't exist
+
+fsand_File Should Unsuccessfully String
+    [Arguments]    ${v_imagesFileName}    ${v_errorMessage}
+    ${v_result}=    Run Keyword And Return Status    SikuliLibrary.Object Exists    ${v_pathToSikuliImages}/${v_imagesFileName}    0.5    10
+    sleep    5s
+    Run Keyword If    ${v_result}==False    Fail    ${v_errorMessage}
+
+fsand_Input Recipients
+    [Arguments]    @{v_listOfRecipients}
+    ${v_isRecipientTextFieldExist}=    Run Keyword And Return Status    Wait Until Keyword Succeeds    30s    5s    AppiumLibrary.Page Should Contain Element    ${StringToRecipient_Recipient}
+    Run Keyword If    ${v_isRecipientTextFieldExist}==False    Fail    Recipient textfield doesn't exist
+    ${v_isAddRecipientButtonExist}=    Run Keyword And Return Status    Wait Until Keyword Succeeds    30s    5s    AppiumLibrary.Page Should Contain Element    ${StringToRecipient_AddEmail}
+    Run Keyword If    ${v_isAddRecipientButtonExist}==False    Fail    Add Recipient button doesn't exist
+    : FOR    ${v_aRecipient}    IN    @{v_listOfRecipients}
+    \    AppiumLibrary.Input Text    ${StringToRecipient_Recipient}    ${v_aRecipient}
+    \    Hide Keyboard
+    \    AppiumLibrary.Click Element    ${StringToRecipient_AddEmail}
+
+fsand_Click Send Button To String File
+    ${v_isStringButtonExist}=    Run Keyword And Return Status    Wait Until Keyword Succeeds    30s    5s    AppiumLibrary.Page Should Contain Element    ${StringToRecipient_SendButton}
+    Run Keyword If    ${v_isStringButtonExist}==False    Fail    String button doesnot exist
+    AppiumLibrary.Click Element    ${StringToRecipient_SendButton}
+
+fsand_Verify File Has Been String
+    [Arguments]    ${v_fileName}    ${v_timeOut}
+    ${v_isFileExist}=    Run Keyword And Return Status    Wait Until Keyword Succeeds    ${v_timeOut}    5s    AppiumLibrary.Page Should Contain Text    ${v_fileName}
+    Run Keyword If    ${v_isFileExist}==False    Fail    Your file has been string unsuccessfully!
+
+fsand_Google Drive_Verify And Sign In
+    [Arguments]    ${v_googleAccountUserName}    ${v_googleAccountPassword}
+    ${v_isSignedIn}=    Run Keyword And Ignore Error    AppiumLibrary.Page Should Contain Element    //android.widget.CheckedTextView[@text="${v_googleAccountUserName}"]
+    Run Keyword If    '${v_isSignedIn[0]}'=='FAIL'    fsand_Google Drive_Sign In    ${v_googleAccountUserName}    ${v_googleAccountPassword}
+    Run Keyword If    '${v_isSignedIn[0]}'=='PASS'    Run Keywords    AppiumLibrary.Click Element    //android.widget.CheckedTextView[@text="${v_googleAccountUserName}"]    AND    AppiumLibrary.Click Element
+    ...    id=android:id/button2
+
+fsand_Google Drive_Sign In
+    [Arguments]    ${v_googleAccountUserName}    ${v_googleAccountPassword}
+    Comment    Select Add account option and click OK button
+    fsand_Wait Until Element Exist Timeout    //android.widget.CheckedTextView[@text="Add account"]    10    Add account option doesn't exist
+    AppiumLibrary.Click Element    ${GoogleDrive_SelectGoogleAccount_AddAccountButton}
+    AppiumLibrary.Click Element    ${GoogleDrive_SelectGoogleAccount_OKButton}
+    Comment    Select add exist google drive account
+    fsand_Wait Until Element Exist Timeout    ${GoogleDrive_AddAGoogleAccount_ExistingButton}    10    Add account option doesn't exist
+    AppiumLibrary.Click Element    ${GoogleDrive_AddAGoogleAccount_ExistingButton}
+    Comment    Input email address, password and click Next Button
+    fsand_Wait Until Element Exist Timeout    ${GoogleDrive_SignIn_EmailAddress}    10    Email address doesn't exist
+    AppiumLibrary.Input Text    ${GoogleDrive_SignIn_EmailAddress}    ${v_googleAccountUserName}
+    fsand_Wait Until Element Exist Timeout    ${GoogleDrive_SignIn_Password}    10    Email address doesn't exist
+    AppiumLibrary.Input Text    ${GoogleDrive_SignIn_Password}    ${v_googleAccountPassword}
+    fsand_Wait Until Element Exist Timeout    ${GoogleDrive_SignIn_NextButton}    10    Next button doesn't exist
+    AppiumLibrary.Click Element    ${GoogleDrive_SignIn_NextButton}
+    Comment    Click OK button
+    fsand_Wait Until Element Exist Timeout    ${GoogleDrive_SignIn_OKButton}    10    OK button on confirm terms of service
+    AppiumLibrary.Click Element    ${GoogleDrive_SignIn_OKButton}
+    Comment    Click not now button
+    fsand_Wait Until Element Exist Timeout    ${GoogleDrive_UpgradeToGooglePlus_NotNow}    60    OK button on confirm terms of service
+    AppiumLibrary.Click Element    ${GoogleDrive_UpgradeToGooglePlus_NotNow}
+    Comment    uncheck on send emails
+    Comment    fsand_Wait Until Element Exist Timeout    ${GoogleDrive_Services_checkbox}    10    Send checkbox doesn't exist
+    Comment    AppiumLibrary.Click Element    ${GoogleDrive_Services_checkbox}
+    Comment    Click Next Button
+    fsand_Wait Until Element Exist Timeout    ${GoogleDrive_SignIn_NextButton}    10    Next button doesn't exist
+    AppiumLibrary.Click Element    ${GoogleDrive_SignIn_NextButton}
+    Comment    Click Next Button
+    fsand_Wait Until Element Exist Timeout    ${GoogleDrive_SignIn_NextButton}    10    Next button doesn't exist
+    AppiumLibrary.Click Element    ${GoogleDrive_SignIn_NextButton}
+
+fsand_Dropbox_Install
+    fsand_Install Application    ${CURDIR}/../../Tool/Extend Application/[dropbox]com.dropbox.android.apk
+
+fsand_Dropbox_Uninstall
+    fsand_Uninstall Application    com.dropbox.android
+
+fsand_Dropbox_Open
+    fsand_Open Application Using PackageName    com.dropbox.android
+
+fsand_Dropbox_Sign Out
+    fsand_Dropbox_Open
+    Comment    Click Skip this
+    ${v_isSkipExist}=    Run Keyword And Return Status    Wait Until Keyword Succeeds    4    1    AppiumLibrary.Page Should Contain Element    id=com.dropbox.android:id/cu_thumbs_skip
+    Run Keyword If    ${v_isSkipExist}==True    AppiumLibrary.Click Element    id=com.dropbox.android:id/cu_thumbs_skip
+    Comment    Click More button And click settings
+    ${v_isMoreExist}=    Run Keyword And Return Status    AppiumLibrary.Page Should Contain Element    ${Dropbox_Home_MoreOption}
+    Run Keyword If    ${v_isMoreExist}==True    AppiumLibrary.Click Element    ${Dropbox_Home_MoreOption}    ELSE    Fail    More option doesn't exist
+    ${v_isSettingsExist}=    Run Keyword And Return Status    AppiumLibrary.Page Should Contain Element    ${Dropbox_Home_MoreOption_Settings}
+    Run Keyword If    ${v_isSettingsExist}==True    AppiumLibrary.Click Element    ${Dropbox_Home_MoreOption_Settings}    ELSE    Fail    Settings option doesn't exist
+    Comment    Click Sign Out and click OK
+    ${v_isSignOutExist}=    Run Keyword And Return Status    AppiumLibrary.Page Should Contain Element    ${Dropbox_Settings_SignOut}
+    Run Keyword If    ${v_isSignOutExist}==True    AppiumLibrary.Click Element    ${Dropbox_Settings_SignOut}    ELSE    Fail    Sign out of Dropbox option doesn't exist
+    ${v_isOKExist}=    Run Keyword And Return Status    Wait Until Keyword Succeeds    4    1    AppiumLibrary.Page Should Contain Element    id=android:id/button1
+    Run Keyword If    ${v_isOKExist}==True    AppiumLibrary.Click Element    id=android:id/button1
+    Sleep    5s
+
+fsand_Dropbox_Search And Select File
+    [Arguments]    ${v_fileName}    ${v_justContainFileName}=${False}
+    ${MAX_SCREEN}=    Set Variable    30
+    ${v_numberOfItems}=    fsand_Count Number Of Matching Items    //android.widget.ListView[@id="android:id/list"]/android.widget.FrameLayout
+    ${v_numberOfItems}=    Evaluate    ${v_numberOfItems}-1
+    ${v_previousLastFileName}=    Set Variable    ${EMPTY}
+    ${v_currentLastFileName}=    Set Variable    ${EMPTY}
+    : FOR    ${v_index}    IN RANGE    0    20
+    \    ${v_result}=    Run Keyword If    ${v_justContainFileName}==True    AppiumLibrary.Page Should Contain Text    ${v_fileName}    ELSE
+    \    ...    Run Keyword And Return Status    AppiumLibrary.Click Element    //android.widget.TextView[@resource-id="com.dropbox.android:id/filelist_name" and @text="${v_fileName}"]
+    \    Run Keyword If    ${v_result}==True and ${v_justContainFileName}==True    Run Keywords    fsand_Dropbox_Search And Select File_Contain    ${v_numberOfItems}    ${v_fileName}
+    \    ...    AND    Exit For Loop
+    \    Run Keyword If    ${v_result}==True    Exit For Loop
+    \    ${v_previousLastFileName}=    AppiumLibrary.Get Element Text    //android.widget.ListView[@id="android:id/list"]/android.widget.FrameLayout[@index="${v_numberOfItems}"]//android.widget.TextView[@resource-id="com.dropbox.android:id/filelist_name"]
+    \    Scroll Slow    //android.widget.ListView[@id="android:id/list"]/android.widget.FrameLayout[@index="${v_numberOfItems}"]    //android.widget.ListView[@id="android:id/list"]/android.widget.FrameLayout[@index="0"]
+    \    Sleep    3s
+    \    ${v_currentLastFileName}    AppiumLibrary.Get Element Text    //android.widget.ListView[@id="android:id/list"]/android.widget.FrameLayout[@index="${v_numberOfItems}"]//android.widget.TextView[@resource-id="com.dropbox.android:id/filelist_name"]
+    \    Run Keyword If    '${v_previousLastFileName}'=='${v_currentLastFileName}'    Run Keyword    Fail    Your file "${v_folderNameOrFileName}" doesn't exist
+
+fsand_Dropbox_Search And Select File_Contain
+    [Arguments]    ${v_numberOfItems}    ${v_fileName}
+    : FOR    ${v_index}    IN RANGE    0    ${v_numberOfItems + 1}
+    \    ${v_currentText}=    AppiumLibrary.Get Element Text    //android.widget.ListView[@id="android:id/list"]/android.widget.FrameLayout[@index="${v_index}"]//android.widget.TextView[@resource-id="com.dropbox.android:id/filelist_name"]
+    \    ${v_isContain}=    Run Keyword And Return Status    Should Contain    ${v_currentText}    ${v_fileName}
+    \    Run Keyword If    ${v_isContain}==True    Run Keywords    AppiumLibrary.Click Element    //android.widget.ListView[@id="android:id/list"]/android.widget.FrameLayout[@index="${v_index}"]    AND
+    \    ...    Exit For Loop
+
+fsand_Google Drive_Search And Select File To String
+    [Arguments]    ${v_fileName}
+    ${v_isContainError}=    Run Keyword And Return Status    Wait Until Keyword Succeeds    10    1    AppiumLibrary.Page Should Contain Element    id=android:id/message
+    ${v_errormessage}=    Run Keyword If    ${v_isContainError}==True    AppiumLibrary.Get Element Text    id=android:id/message
+    Run Keyword If    ${v_isContainError}==True    Fail    Can't String file using google drive, the error was:"${v_errormessage}"
+
+fsand_Verify File Is Exist On Current Screen
+    [Arguments]    ${v_fileName}    ${v_timeout}
+    ${v_isFileExist}=    Run Keyword And Return Status    Wait Until Keyword Succeeds    ${v_timeout}    5s    AppiumLibrary.Page Should Contain Text    ${v_fileName}
+    Run Keyword If    ${v_isFileExist}==False    Fail    Your file has been string unsuccessfully!

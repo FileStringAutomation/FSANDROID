@@ -1,0 +1,68 @@
+*** Test Cases ***
+fs[4001]_Owner change right upgrade Access Level for Recipient
+
+fs[4002]_Owner change right downgrade Access Level for Recipient
+
+fs[4003]_Owner change right downgrade Access Level for Recipient affect Downstream
+
+fs[4004]_Owner change right upgrade Allow Printing for Recipient
+
+fs[4005]_Owner change right downgrade Allow Printing for Recipient
+
+fs[4006]_Owner change right downgrade Allow Printing for Recipient affect Downstream
+
+fs[4007]_Owner change right upgrade Display Watermark for Recipient
+
+fs[4008]_Owner change right downgrade Display Watermark for Recipient
+
+fs[4009]_Owner change right downgrade Display Watermark for Recipient affect Downstream
+
+fs[4010]_Owner change right down Expiration for Recipient
+
+fs[4011]_Owner change right down Expiration for Recipient affect Downstream
+
+fs[4012]_Owner change right up Expiration for Recipient
+
+fs[4013]_Owner set Expiration for Recipient who no Expiration
+
+fs[4014]_Owner set Expiration for Recipient with no Expiratin affect Downstream
+
+fs[4015]_Owner set no Expiration for Recipient who has \ Expiration
+
+fs[4017]_Owner change right upgrade Access Level for multi Recipient
+
+fs[4018]_Owner change right downgrade Access Level for multi Recipient
+
+fs[4019]_Owner change right downgrade Access Level for Recipient who is viewing Tracking Report
+
+fs[4020]_Owner change right downgrade Access Level for Recipient who is adding Dowstream
+
+fs[4021]_Owner change right downgrade Access Level for Recipient when Downstream is viewing file
+
+fs[4022]_Owner change right downgrade Access Level for Recipient when Downstream is viewing File Detail
+
+fs[4023]_Owner change right downgrade Access Level for Recipient when Downstream is viewing File Info
+
+fs[4024]_Direct-Recipient change right downgrade Allow Printing for Downstream
+
+fs[4025]_Direct-Recipient change right upgrade Allow Printing for Downstream
+
+fs[4026]_Direct-Recipient change right downgrade Display Watermark for Downstream
+
+fs[4027]_Direct-Recipient change right upgrade Display Watermark for Downstream
+
+fs[4028]_Direct-Recipient change right up Expiration for Downstream
+
+fs[4029]_Direct-Recipient change right down Expiration for Downstream
+
+fs[4030]_Direct-Recipient set no Expiration for Downstream who has \ Expiration
+
+fs[4031]_Direct-Recipient set Expiration for Downstream who has \ no Expiration
+
+fs[4032]_Direct-Recipient can not change right Access Level for Downstream
+
+fs[4033]_Direct-Recipient can not change right Allow Printing for Downstream if Owner turn off
+
+fs[4034]_Direct-Recipient can not change right Display Watermark for Downstream if Owner turn on
+
+fs[4035]_Direct-Recipient change right Display Watermakr for multi Downstream

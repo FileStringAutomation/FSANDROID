@@ -1,0 +1,160 @@
+*** Settings ***
+Test Setup        Run Keywords    Use TestLink    AND    fsand_Load Data From File    ${v_pathToStringAFileDataFile}    ${v_testcaseID}    AND
+...               Open Application    ${v_remoteUrl}    ${v_alias}    AND    fsand_Change Environment
+Test Teardown     Run Keywords    fsand_Delete All Files (Which Have Been String)    Close All Applications
+Resource          ../../Resources/Android/StringAFile.txt
+
+*** Test Cases ***
+fs[19927]_*.bmp
+    fsand_Sign In Successful    ${v_data['Owner username']}    ${v_data['Owner password']}
+    fsand_String A File    ${v_pathToSupportedFileType}    ${v_data['Filename']}    automation_supportedFile
+    fsand_Input Recipients    ${v_data['Recipient username']}
+    fsand_Click Send Button To String File
+    fsand_Verify File Has Been String    ${v_data['Filename']}    120s
+
+fs[19925]_*.png
+    fsand_Sign In Successful    ${v_data['Owner username']}    ${v_data['Owner password']}
+    fsand_String A File    ${v_pathToSupportedFileType}    ${v_data['Filename']}    automation_supportedFile
+    fsand_Input Recipients    ${v_data['Owner username']}
+    fsand_Click Send Button To String File
+    fsand_Verify File Has Been String    ${v_data['Filename']}    120s
+
+fs[19923]_*.jpeg
+    fsand_Sign In Successful    ${v_data['Owner username']}    ${v_data['Owner password']}
+    fsand_String A File    ${v_pathToSupportedFileType}    ${v_data['Filename']}    automation_supportedFile
+    fsand_Input Recipients    ${v_data['Owner username']}
+    fsand_Click Send Button To String File
+    fsand_Verify File Has Been String    ${v_data['Filename']}    120s
+
+fs[19921]_*.jpg
+    fsand_Sign In Successful    ${v_data['Owner username']}    ${v_data['Owner password']}
+    fsand_String A File    ${v_pathToSupportedFileType}    ${v_data['Filename']}    automation_supportedFile
+    fsand_Input Recipients    ${v_data['Owner username']}
+    fsand_Click Send Button To String File
+    fsand_Verify File Has Been String    ${v_data['Filename']}    120s
+
+fs[19879]_*.docx
+    fsand_Sign In Successful    ${v_data['Owner username']}    ${v_data['Owner password']}
+    fsand_String A File    ${v_pathToSupportedFileType}    ${v_data['Filename']}    automation_supportedFile
+    fsand_Input Recipients    ${v_data['Owner username']}
+    fsand_Click Send Button To String File
+    fsand_Verify File Has Been String    ${v_data['Filename']}    120s
+
+fs[4771]_*.doc
+    fsand_Sign In Successful    ${v_data['Owner username']}    ${v_data['Owner password']}
+    fsand_String A File    ${v_pathToSupportedFileType}    ${v_data['Filename']}    automation_supportedFile
+    fsand_Input Recipients    ${v_data['Owner username']}
+    fsand_Click Send Button To String File
+    fsand_Verify File Has Been String    ${v_data['Filename']}    120s
+
+fs[4773]_*.ppt
+    fsand_Sign In Successful    ${v_data['Owner username']}    ${v_data['Owner password']}
+    fsand_String A File    ${v_pathToSupportedFileType}    ${v_data['Filename']}    automation_supportedFile
+    fsand_Input Recipients    ${v_data['Owner username']}
+    fsand_Click Send Button To String File
+    fsand_Verify File Has Been String    ${v_data['Filename']}    120s
+
+fs[19917]_*.pttx
+    fsand_Sign In Successful    ${v_data['Owner username']}    ${v_data['Owner password']}
+    fsand_String A File    ${v_pathToSupportedFileType}    ${v_data['Filename']}    automation_supportedFile
+    fsand_Input Recipients    ${v_data['Owner username']}
+    fsand_Click Send Button To String File
+    fsand_Verify File Has Been String    ${v_data['Filename']}    120s
+
+fs[4775]_*.xls
+    fsand_Sign In Successful    ${v_data['Owner username']}    ${v_data['Owner password']}
+    fsand_String A File    ${v_pathToSupportedFileType}    ${v_data['Filename']}    automation_supportedFile
+    fsand_Input Recipients    ${v_data['Owner username']}
+    fsand_Click Send Button To String File
+    fsand_Verify File Has Been String    ${v_data['Filename']}    120s
+
+fs[19915]_*.xlsx
+    fsand_Sign In Successful    ${v_data['Owner username']}    ${v_data['Owner password']}
+    fsand_String A File    ${v_pathToSupportedFileType}    ${v_data['Filename']}    automation_supportedFile
+    fsand_Input Recipients    ${v_data['Owner username']}
+    fsand_Click Send Button To String File
+    fsand_Verify File Has Been String    ${v_data['Filename']}    120s
+
+fs[15147]_*.pdf
+    fsand_Sign In Successful    ${v_data['Owner username']}    ${v_data['Owner password']}
+    fsand_String A File    ${v_pathToSupportedFileType}    ${v_data['Filename']}    automation_supportedFile
+    fsand_Input Recipients    ${v_data['Owner username']}
+    fsand_Click Send Button To String File
+    fsand_Verify File Has Been String    ${v_data['Filename']}    120s
+
+fs[4777]_*.mp3
+    fsand_Sign In Successful    ${v_data['Owner username']}    ${v_data['Owner password']}
+    fsand_String A File    ${v_pathToSupportedFileType}    ${v_data['Filename']}    automation_supportedFile
+    fsand_Input Recipients    ${v_data['Owner username']}
+    fsand_Click Send Button To String File
+    fsand_Verify File Has Been String    ${v_data['Filename']}    300s
+
+fs[4779]_*.mp4
+    fsand_Sign In Successful    ${v_data['Owner username']}    ${v_data['Owner password']}
+    fsand_String A File    ${v_pathToSupportedFileType}    ${v_data['Filename']}    automation_supportedFile
+    fsand_Input Recipients    ${v_data['Owner username']}
+    fsand_Click Send Button To String File
+    fsand_Verify File Has Been String    ${v_data['Filename']}    600s
+
+fs[4797]_File error/ corrupt
+    fsand_Sign In Successful    ${v_data['Owner username']}    ${v_data['Owner password']}
+    fsand_String A File    ${v_pathToSupportedFileType}    ${v_data['Filename']}    automation_supportedFile
+    fsand_Input Recipients    ${v_data['Owner username']}
+    fsand_Click Send Button To String File
+    fsand_Verify File Has Been String    ${v_data['Filename']}    120s
+
+fs[4785]_String file with Access Level is changed
+    fsand_Sign In Successful    ${v_data['Owner username']}    ${v_data['Owner password']}
+    fsand_String A File    ${v_pathToSupportedFileType}    ${v_data['Filename']}    automation_supportedFile
+    fsand_Input Recipients    ${v_data['Owner username']}
+    fsand_Click Send Button To String File
+    fsand_Verify File Has Been String    ${v_data['Filename']}    120s
+
+fs[12932]_String file with Expiration is changed
+    fsand_Sign In Successful    ${v_data['Owner username']}    ${v_data['Owner password']}
+    fsand_String A File    ${v_pathToSupportedFileType}    ${v_data['Filename']}    automation_supportedFile
+    fsand_Input Recipients    ${v_data['Owner username']}
+    fsand_Click Send Button To String File
+    fsand_Verify File Has Been String    ${v_data['Filename']}    120s
+
+fs[13008]_String file with Allow Printing is changed
+    fsand_Sign In Successful    ${v_data['Owner username']}    ${v_data['Owner password']}
+    fsand_String A File    ${v_pathToSupportedFileType}    ${v_data['Filename']}    automation_supportedFile
+    fsand_Input Recipients    ${v_data['Owner username']}
+    fsand_Click Send Button To String File
+    fsand_Verify File Has Been String    ${v_data['Filename']}    120s
+
+fs[12984]_String file with Display Watermark is changed
+    fsand_Sign In Successful    ${v_data['Owner username']}    ${v_data['Owner password']}
+    fsand_String A File    ${v_pathToSupportedFileType}    ${v_data['Filename']}    automation_supportedFile
+    fsand_Input Recipients    ${v_data['Owner username']}
+    fsand_Click Send Button To String File
+    fsand_Verify File Has Been String    ${v_data['Filename']}    120s
+
+fs[4795]_with File large resolution
+    fsand_Sign In Successful    ${v_data['Owner username']}    ${v_data['Owner password']}
+    fsand_String A File    ${v_pathToSupportedFileType}    ${v_data['Filename']}    automation_supportedFile
+    fsand_Input Recipients    ${v_data['Owner username']}
+    fsand_Click Send Button To String File
+    fsand_Verify File Has Been String    ${v_data['Filename']}    180s
+
+fs[4805]_String file to secondary email of another account
+    fsand_Sign In Successful    ${v_data['Owner username']}    ${v_data['Owner password']}
+    fsand_String A File    ${v_pathToSupportedFileType}    ${v_data['Filename']}    automation_supportedFile
+    fsand_Input Recipients    ${v_data['Owner username']}
+    fsand_Click Send Button To String File
+    fsand_Verify File Has Been String    ${v_data['Filename']}    120s
+
+fs[4828]_File name > (128 characters)
+    fsand_Sign In Successful    ${v_data['Owner username']}    ${v_data['Owner password']}
+    fsand_String A File    ${v_pathToSupportedFileType}    ${v_data['Filename']}    automation_supportedFile
+    fsand_Input Recipients    ${v_data['Owner username']}
+    fsand_Click Send Button To String File
+    fsand_Verify File Has Been String    ${v_data['Filename']}    120s
+
+fs[20102]_*.txt
+    fsand_Sign In Successful    ${v_data['Owner username']}    ${v_data['Owner password']}
+    fsand_String A File    ${v_pathToSupportedFileType}    ${v_data['Filename']}    automation_supportedFile
+    fsand_Input Recipients    ${v_data['Recipient username']}
+    fsand_Click Send Button To String File
+    fsand_Verify File Has Been String    ${v_data['Filename']}    120s

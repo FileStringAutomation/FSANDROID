@@ -1,0 +1,142 @@
+*** Settings ***
+Test Setup        Run Keywords    Use TestLink    AND    fsand_Load Data From File    ${v_pathToStringAFileDataFile}    ${v_testcaseID}    AND
+...               Open Application    ${v_remoteUrl}    ${v_alias}    AND    fsand_Change Environment
+Test Teardown     Close All Applications
+Resource          ../../Resources/Android/StringAFile.txt
+
+*** Test Cases ***
+fs[19929]_String file *.docx when Google Drive had signed in
+    fsand_Sign In Successful    ${v_data['Owner username']}    ${v_data['Owner password']}
+    fsand_Click "+" icon
+    fsand_Select String From Google Drive Option
+    fsand_Google Drive_Verify And Sign In    ${v_data['Google Drive username']}    ${v_data['Google Drive password']}
+    fsand_Google Drive_Search And Select File To String    ${v_data['Filename']}
+    fsand_Input Recipients    ${v_data['Recipient username']}
+    fsand_Click Send Button To String File
+    fsand_Verify File Is Exist On Current Screen    ${v_data['Filename']}    120
+
+fs[19955]_String file *.doc when Google Drive had signed in
+    fsand_Sign In Successful    ${v_data['Owner username']}    ${v_data['Owner password']}
+    fsand_Click "+" icon
+    fsand_Select String From Google Drive Option
+    fsand_Google Drive_Verify And Sign In    ${v_data['Google Drive username']}    ${v_data['Google Drive password']}
+    fsand_Google Drive_Search And Select File To String    ${v_data['Filename']}
+    fsand_Input Recipients    ${v_data['Recipient username']}
+    fsand_Click Send Button To String File
+    fsand_Verify File Is Exist On Current Screen    ${v_data['Filename']}    120
+
+fs[19957]_String file *.pptx when Google Drive had signed in
+    fsand_Sign In Successful    ${v_data['Owner username']}    ${v_data['Owner password']}
+    fsand_Click "+" icon
+    fsand_Select String From Google Drive Option
+    fsand_Google Drive_Verify And Sign In    ${v_data['Google Drive username']}    ${v_data['Google Drive password']}
+    fsand_Google Drive_Search And Select File To String    ${v_data['Filename']}
+    fsand_Input Recipients    ${v_data['Recipient username']}
+    fsand_Click Send Button To String File
+    fsand_Verify File Is Exist On Current Screen    ${v_data['Filename']}    120
+
+fs[19931]_String file *.ppt when Google Drive had signed in
+    fsand_Sign In Successful    ${v_data['Owner username']}    ${v_data['Owner password']}
+    fsand_Click "+" icon
+    fsand_Select String From Google Drive Option
+    fsand_Google Drive_Verify And Sign In    ${v_data['Google Drive username']}    ${v_data['Google Drive password']}
+    fsand_Google Drive_Search And Select File To String    ${v_data['Filename']}
+    fsand_Input Recipients    ${v_data['Recipient username']}
+    fsand_Click Send Button To String File
+    fsand_Verify File Is Exist On Current Screen    ${v_data['Filename']}    120
+
+fs[19953]_String file *.xslx when Google Drive had signed in
+    fsand_Sign In Successful    ${v_data['Owner username']}    ${v_data['Owner password']}
+    fsand_Click "+" icon
+    fsand_Select String From Google Drive Option
+    fsand_Google Drive_Verify And Sign In    ${v_data['Google Drive username']}    ${v_data['Google Drive password']}
+    fsand_Google Drive_Search And Select File To String    ${v_data['Filename']}
+    fsand_Input Recipients    ${v_data['Recipient username']}
+    fsand_Click Send Button To String File
+    fsand_Verify File Is Exist On Current Screen    ${v_data['Filename']}    120
+
+fs[19951]_String file *.xsl when Google Drive had signed in
+    fsand_Sign In Successful    ${v_data['Owner username']}    ${v_data['Owner password']}
+    fsand_Click "+" icon
+    fsand_Select String From Google Drive Option
+    fsand_Google Drive_Verify And Sign In    ${v_data['Google Drive username']}    ${v_data['Google Drive password']}
+    fsand_Google Drive_Search And Select File To String    ${v_data['Filename']}
+    fsand_Input Recipients    ${v_data['Recipient username']}
+    fsand_Click Send Button To String File
+    fsand_Verify File Is Exist On Current Screen    ${v_data['Filename']}    120
+
+fs[19949]_String file *.png when Google Drive had signed in
+    fsand_Sign In Successful    ${v_data['Owner username']}    ${v_data['Owner password']}
+    fsand_Click "+" icon
+    fsand_Select String From Google Drive Option
+    fsand_Google Drive_Verify And Sign In    ${v_data['Google Drive username']}    ${v_data['Google Drive password']}
+    fsand_Google Drive_Search And Select File To String    ${v_data['Filename']}
+    fsand_Input Recipients    ${v_data['Recipient username']}
+    fsand_Click Send Button To String File
+    fsand_Verify File Is Exist On Current Screen    ${v_data['Filename']}    120
+
+fs[19947]_String file *.jpg when Google Drive had signed in
+    fsand_Sign In Successful    ${v_data['Owner username']}    ${v_data['Owner password']}
+    fsand_Click "+" icon
+    fsand_Select String From Google Drive Option
+    fsand_Google Drive_Verify And Sign In    ${v_data['Google Drive username']}    ${v_data['Google Drive password']}
+    fsand_Google Drive_Search And Select File To String    ${v_data['Filename']}
+    fsand_Input Recipients    ${v_data['Recipient username']}
+    fsand_Click Send Button To String File
+    fsand_Verify File Is Exist On Current Screen    ${v_data['Filename']}    120
+
+fs[19945]_String file *.jpeg when Google Drive had signed in
+    fsand_Sign In Successful    ${v_data['Owner username']}    ${v_data['Owner password']}
+    fsand_Click "+" icon
+    fsand_Select String From Google Drive Option
+    fsand_Google Drive_Verify And Sign In    ${v_data['Google Drive username']}    ${v_data['Google Drive password']}
+    fsand_Google Drive_Search And Select File To String    ${v_data['Filename']}
+    fsand_Input Recipients    ${v_data['Recipient username']}
+    fsand_Click Send Button To String File
+    fsand_Verify File Is Exist On Current Screen    ${v_data['Filename']}    120
+
+fs[19943]_String file *.bmp when Google Drive had signed in
+    fsand_Sign In Successful    ${v_data['Owner username']}    ${v_data['Owner password']}
+    fsand_Click "+" icon
+    fsand_Select String From Google Drive Option
+    fsand_Google Drive_Verify And Sign In    ${v_data['Google Drive username']}    ${v_data['Google Drive password']}
+    fsand_Google Drive_Search And Select File To String    ${v_data['Filename']}
+    fsand_Input Recipients    ${v_data['Recipient username']}
+    fsand_Click Send Button To String File
+    fsand_Verify File Is Exist On Current Screen    ${v_data['Filename']}    120
+
+fs[19941]_String file *.mp3 when Google Drive had signed in
+    fsand_Sign In Successful    ${v_data['Owner username']}    ${v_data['Owner password']}
+    fsand_Click "+" icon
+    fsand_Select String From Google Drive Option
+    fsand_Google Drive_Verify And Sign In    ${v_data['Google Drive username']}    ${v_data['Google Drive password']}
+    fsand_Google Drive_Search And Select File To String    ${v_data['Filename']}
+    fsand_Input Recipients    ${v_data['Recipient username']}
+    fsand_Click Send Button To String File
+    fsand_Verify File Is Exist On Current Screen    ${v_data['Filename']}    300
+
+fs[19939]_String file *.mp4 when Google Drive had signed in
+    fsand_Sign In Successful    ${v_data['Owner username']}    ${v_data['Owner password']}
+    fsand_Click "+" icon
+    fsand_Select String From Google Drive Option
+    fsand_Google Drive_Verify And Sign In    ${v_data['Google Drive username']}    ${v_data['Google Drive password']}
+    fsand_Google Drive_Search And Select File To String    ${v_data['Filename']}
+    fsand_Input Recipients    ${v_data['Recipient username']}
+    fsand_Click Send Button To String File
+    fsand_Verify File Is Exist On Current Screen    ${v_data['Filename']}    300
+
+fs[19937]_String file un-support when Google Drive had signed in
+    fsand_Sign In Successful    ${v_data['Owner username']}    ${v_data['Owner password']}
+    fsand_Click "+" icon
+    fsand_Select String From Google Drive Option
+    fsand_Google Drive_Verify And Sign In    ${v_data['Google Drive username']}    ${v_data['Google Drive password']}
+    fsand_Google Drive_Search And Select File To String    ${v_data['Filename']}
+    fsand_File Should Unsuccessfully String    ${v_data['Sikuli Image File Name']}    Incorrect error message!
+
+fs[19935]_String file >50MB when Google Drive had signed in
+    fsand_Sign In Successful    ${v_data['Owner username']}    ${v_data['Owner password']}
+    fsand_Click "+" icon
+    fsand_Select String From Google Drive Option
+    fsand_Google Drive_Verify And Sign In    ${v_data['Google Drive username']}    ${v_data['Google Drive password']}
+    fsand_Google Drive_Search And Select File To String    ${v_data['Filename']}
+    fsand_File Should Unsuccessfully String    ${v_data['Sikuli Image File Name']}    Incorrect error message!
