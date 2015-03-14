@@ -4,11 +4,8 @@ Library           HttpLibrary.HTTP
 Resource          ../../Variables/Variables.txt
 
 *** Variables ***
-<<<<<<< HEAD
 ${v_baseUrlUsingAPI}     https://fscs1.cloudapp.net:89
-=======
 ${v_baseUrlUsingAPI}    https://fscs1.cloudapp.net:89
->>>>>>> ce7a2bd0339463df41c806100fab42314fabd3d8
 
 *** Keywords ***
 fscore_Get Access Tooken And User ID

@@ -16,7 +16,6 @@ fs[1002]_Can sign in with Email has "space" in first and end
     fsand_Sign In Successful    ${v_data['Email Address']}    ${v_data['Password']}
 
 fs[1003]_Can sign in After reset password with new password
-<<<<<<< HEAD
     fsand_Sign In Successful    ${v_data[0]}    ${v_data[1]}
     Comment    Verify All Files Screen
     Comment    fsand_Verify All Files Screen
@@ -33,7 +32,6 @@ fs[1003]_Can sign in After reset password with new password
     fsand_Sign In Successful    ${v_data[0]}    ${v_data[2]}
     Comment    Verify All Files Screen
     fscore_Update User Password    ${v_data[0]}    ${v_data[2]}    ${v_data[1]}
-=======
     fsand_Open Reset Password Screen
     Comment    Input Email
     AppiumLibrary.Input Text    ${ResetPassword_EmailAddress}    ${v_data['Email Address']}
@@ -60,7 +58,6 @@ fs[1003]_Can sign in After reset password with new password
     fsand_Sign In Successful    ${v_data['Email Address']}    ${v_data['New Password']}
     [Teardown]    Run Keywords    Close Application    AND    Close Browser    AND    fscore_Update User Password
     ...    ${v_data['Email Address']}    ${v_data['New Password']}    ${v_data['Password']}
->>>>>>> ce7a2bd0339463df41c806100fab42314fabd3d8
 
 fs[1004]_Can sign in After change password with new password
     fsand_Sign In Successful    ${v_data['Email Address']}    ${v_data['Password']}
